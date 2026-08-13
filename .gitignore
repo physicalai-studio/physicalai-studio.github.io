@@ -52,3 +52,7 @@ tsconfig.tsbuildinfo
 
 # 하네스 설치 스크립트가 만든 백업
 .claude/settings.json.bak
+
+# 제3자 참조 이미지 — 저작권 때문에 커밋하지 않는다
+image/reference/*
+!image/reference/README.md

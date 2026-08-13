@@ -9,6 +9,9 @@
   home-contact-field.webp  두 파동원의 간섭 무늬 — 쌍곡선 프린지 (FRINGE)
   about-field.webp         퍼져 나가는 파면 (WAVEFRONT) — About 페이지 배경
   contact-page-field.webp  FRINGE 의 조용한 변주 — Contact 페이지 배경
+  services-field.webp      정상파의 마디 (NODE) — Services 페이지 배경
+  projects-field.webp      확정된 코어 (RING) — Projects 페이지 배경
+  technology-field.webp    중심이 보이는 파면 (WAVEFRONT) — Technology 페이지 배경
   src/app/icon.png         파비콘 — 히어로와 같은 RING 형태를 작은 크기용으로 다시 그린 것
   src/app/apple-icon.png   iOS 홈 화면 아이콘 (같은 그림, 180px)
 
@@ -214,6 +217,82 @@ def build_contact_page_field() -> np.ndarray:
     return np.clip(np.clip(fringe * envelope, 0.0, 1.0) ** 1.45 * 0.62, 0.0, 1.0)
 
 
+# ── 본문 페이지 배경 3종 ──────────────────────────────────────────────
+# About·Contact 보다 **밝기를 올리고 파동의 중심을 화면 안에** 둔다.
+# 배경이 스스로를 드러내되 본문을 이기지는 않는 선(컨셉 §5 — 밝은 화소 20% 이하).
+
+def build_services_field() -> np.ndarray:
+    """정상파의 마디. 비주얼 컨셉 §4 의 `NODE`.
+
+    뜻: **해가 사라지는 지점.** 특이 자세 · dead-band.
+    Services 01(도달 가능성 검토)이 되는 곳과 안 되는 곳을 가르는 서비스라 이 형태를 쓴다.
+
+    구현: 밝은 장(場)을 깔고 `|cos(kr)|` 로 **어두운 띠를 새긴다** — 마디가 주인공이므로
+    빛나는 고리가 아니라 빛이 끊기는 자리가 보여야 한다.
+    """
+    x, y = grid(0.72, 0.44, squash=1.0)
+    distance = np.sqrt(x**2 + y**2)
+
+    # 중심에서 퍼지는 발광 — 마디가 새겨질 바탕.
+    glow = np.exp(-((distance / 0.74) ** 1.8))
+
+    # 정상파 — 마디(어두운 띠)가 고정된 반경에 생긴다.
+    standing = np.abs(np.cos(distance * 15.0)) ** 0.55
+
+    field = glow * (0.18 + 0.82 * standing)
+    return np.clip(np.clip(field, 0.0, 1.0) ** 1.60 * 0.78, 0.0, 1.0)
+
+
+def build_projects_field() -> np.ndarray:
+    """확정된 코어. 비주얼 컨셉 §4 의 `RING` 을 **코어 중심으로** 쓴 것.
+
+    뜻: §2 의 **측정 · 확정** — 펼쳐져 있던 가능성이 하나의 값으로 좁혀진다.
+    Projects 는 "무엇이 확인되었는가"를 기록하는 자리라 고리보다 **중심**이 주인공이다.
+
+    새 어휘가 아니다. 같은 `RING` 에서 강조점을 테두리에서 코어로 옮긴 것이다.
+    """
+    x, y = grid(0.70, 0.40, squash=1.02)
+    distance = np.sqrt(x**2 + y**2)
+    angle = np.arctan2(y, x)
+
+    # 코어 — 확정된 하나의 값.
+    core = np.exp(-((distance / 0.20) ** 1.8))
+
+    # 코어를 감싸는 고리 두 겹 — 좁혀 들어온 흔적.
+    outer = ring(x, y, radius=0.58, width=0.075) * angular_weight(x, y, 200, 0.55)
+    mid = ring(x, y, radius=0.34, width=0.048) * angular_weight(x, y, 40, 0.45)
+
+    field = np.maximum(core, np.maximum(outer * 0.72, mid * 0.62))
+    field *= np.exp(-((distance / 1.35) ** 2.4))
+
+    return np.clip(np.clip(field, 0.0, 1.0) ** 1.20 * 0.90, 0.0, 1.0)
+
+
+def build_technology_field() -> np.ndarray:
+    """중심이 보이는 파면. `WAVEFRONT` 를 About 과 달리 **발원점을 화면 안에** 두고 그린다.
+
+    뜻: 가능성이 퍼져 나가는 경계. Technology 는 그 경계가 어디까지인지 말하는 자리다.
+    About 은 발원점을 화면 밖으로 밀어 조용하게 썼고, 여기서는 중심을 보여 준다.
+    """
+    x, y = grid(0.68, 0.46, squash=1.0)
+    distance = np.sqrt(x**2 + y**2)
+    angle = np.arctan2(y, x)
+
+    arcs = (0.5 + 0.5 * np.cos(distance**0.85 * 22.0)) ** 2.6
+
+    # 발원점 자체의 발광 — 중심이 보여야 "퍼져 나간다"가 읽힌다.
+    source = np.exp(-((distance / 0.10) ** 2)) * 0.9
+
+    # 부채꼴을 About 보다 넓게 — 중심이 보이므로 방향성이 이미 확보된다.
+    sector = np.exp(
+        -((np.arctan2(np.sin(angle - np.deg2rad(190)), np.cos(angle - np.deg2rad(190))) / 1.35) ** 2)
+    )
+    decay = np.exp(-((distance / 1.15) ** 1.8))
+
+    field = np.maximum(arcs * sector * decay, source)
+    return np.clip(np.clip(field, 0.0, 1.0) ** 1.18 * 0.88, 0.0, 1.0)
+
+
 def apply_ramp(field: np.ndarray) -> np.ndarray:
     """스칼라 밝기장을 초록 램프 색으로 매핑한다."""
     positions = np.array([stop for stop, _ in RAMP], dtype=np.float32)
@@ -250,6 +329,9 @@ def main() -> None:
     render("home-contact-field", build_contact_field())
     render("about-field", build_about_field())
     render("contact-page-field", build_contact_page_field())
+    render("services-field", build_services_field())
+    render("projects-field", build_projects_field())
+    render("technology-field", build_technology_field())
 
     # 파비콘 — Next.js App Router 가 src/app/icon.png 를 자동으로 <link rel="icon"> 으로 만든다.
     app_dir = ROOT / "src" / "app"

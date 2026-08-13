@@ -19,7 +19,6 @@
 | _(직접 보관 안 함)_     | Lexington Medical | CC0 1.0      | [Manufacturing Robot Arm](https://commons.wikimedia.org/wiki/File:Lexington_Medical,_Inc._Manufacturing_Robot_Arm.jpg)                                        | 리사이즈                  |
 | `lidar-point-cloud.jpg` | Daniel L. Lu      | CC BY 4.0    | [Ouster OS1-64 point cloud](https://commons.wikimedia.org/wiki/File:Ouster_OS1-64_lidar_point_cloud_of_intersection_of_Folsom_and_Dore_St,_San_Francisco.png) | 리사이즈 · 채도/명도 조정 |
 | `harmonic-drive.jpg`    | wdwd              | CC BY-SA 4.0 | [Harmonic Drive](https://commons.wikimedia.org/wiki/File:Harmonic_Drive.jpg)                                                                                  | 크롭 · 리사이즈 · 톤 조정 |
-| `humanoid-tocabi.jpg`   | Cadop             | CC BY-SA 4.0 | [TOCABI](https://commons.wikimedia.org/wiki/File:TOCABI_black_3200px.jpg)                                                                                     | 크롭 · 리사이즈 · 톤 조정 |
 
 > `lidar-point-cloud` 원본은 3840×2160 PNG(15MB)였다. 저장소 용량을 위해 2560px JPEG 로 축소해 보관한다.
 > 더 큰 원본이 필요하면 위 원본 페이지에서 다시 받는다.

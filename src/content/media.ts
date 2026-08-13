@@ -42,6 +42,25 @@ export const mediaManifest = mediaManifestSchema.parse({
     alt: "넓은 간격으로 퍼진 초록빛 간섭 무늬",
     clearance: "self-produced",
   },
+  // 본문 페이지 전체 배경 3종 — About·Contact 보다 밝고 파동의 중심이 화면 안에 있다.
+  "services-backdrop": {
+    kind: "image",
+    src: "/media/services-field.webp",
+    alt: "중심에서 퍼지는 발광에 어두운 마디 띠가 새겨진 정상파",
+    clearance: "self-produced",
+  },
+  "projects-backdrop": {
+    kind: "image",
+    src: "/media/projects-field.webp",
+    alt: "고리에 감싸인 밝은 초록 코어",
+    clearance: "self-produced",
+  },
+  "technology-backdrop": {
+    kind: "image",
+    src: "/media/technology-field.webp",
+    alt: "발원점이 보이는 초록빛 동심 파면",
+    clearance: "self-produced",
+  },
   "service-feasibility": {
     kind: "image",
     src: "/media/collision-validation.webp",
@@ -89,18 +108,6 @@ export const mediaManifest = mediaManifestSchema.parse({
       isModified: true,
       license: "CC BY-SA 4.0",
       sourceUrl: "https://commons.wikimedia.org/wiki/File:Harmonic_Drive.jpg",
-    },
-  },
-  "about-philosophy": {
-    kind: "image",
-    src: "/media/humanoid-portrait.webp",
-    alt: "전신 관절 구동부가 드러난 연구용 휴머노이드 로봇",
-    clearance: "licensed",
-    credit: {
-      holder: "Cadop",
-      isModified: true,
-      license: "CC BY-SA 4.0",
-      sourceUrl: "https://commons.wikimedia.org/wiki/File:TOCABI_black_3200px.jpg",
     },
   },
   "service-physical-ai": {

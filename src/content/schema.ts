@@ -162,8 +162,6 @@ export const siteSchema = z.object({
 export const companySchema = z.object({
   philosophy: nonEmpty,
   philosophyBody: nonEmpty,
-  /** Philosophy 섹션에 함께 놓는 비주얼. 없으면 타이포만 렌더한다. */
-  philosophyMediaSlot: nonEmpty.optional(),
   principles: z.array(z.object({ title: nonEmpty, body: nonEmpty })).min(1),
   founder: z.object({
     role: nonEmpty,

@@ -44,7 +44,6 @@ JOBS = [
     ("industrial-cell", "industrial-cell.jpg", None, 1920, 0.95, 1.60),
     ("digital-twin-pointcloud", "lidar-point-cloud.jpg", None, 1920, 1.05, 1.15),
     ("actuator-harmonic-drive", "harmonic-drive.jpg", (60, 120, 1700, 1670), 1200, 0.90, 1.85),
-    ("humanoid-portrait", "humanoid-tocabi.jpg", (150, 120, 2050, 2650), 1100, 1.05, 1.20),
 ]
 
 

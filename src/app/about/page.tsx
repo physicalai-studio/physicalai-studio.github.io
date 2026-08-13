@@ -1,4 +1,3 @@
-import { MediaSlot } from "@/components/media/MediaSlot";
 import { PageBackdrop } from "@/components/section/PageBackdrop";
 import { Section } from "@/components/section/Section";
 import { SectionHeading } from "@/components/section/SectionHeading";
@@ -18,18 +17,13 @@ export default function AboutPage() {
       <div className="relative">
         {/* 디자인 컨셉 §12: Founder 소개보다 Philosophy 를 먼저 보여준다. */}
         <Section wide fullHeight>
-          <div className="grid w-full items-center gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-20">
-            <div>
-              <h1 className="max-w-[16ch] text-(length:--text-headline) leading-[1.05] font-semibold tracking-tight uppercase">
-                {company.philosophy}
-              </h1>
-              <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted">
-                {company.philosophyBody}
-              </p>
-            </div>
-            {company.philosophyMediaSlot ? (
-              <MediaSlot slotId={company.philosophyMediaSlot} className="aspect-3/4 w-full" />
-            ) : null}
+          <div>
+            <h1 className="max-w-[16ch] text-(length:--text-headline) leading-[1.05] font-semibold tracking-tight uppercase">
+              {company.philosophy}
+            </h1>
+            <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted">
+              {company.philosophyBody}
+            </p>
           </div>
         </Section>
 

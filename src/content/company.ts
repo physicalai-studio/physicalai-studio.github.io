@@ -8,7 +8,6 @@ export const company = companySchema.parse({
   philosophy: "ENGINEERING BEFORE ASSUMPTION.",
   philosophyBody:
     "로봇 시스템은 만든 뒤에 문제를 발견하면 비용이 큽니다. 우리는 그 문제를 가상환경에서 먼저 찾습니다.",
-  philosophyMediaSlot: "about-philosophy",
   principles: [
     {
       title: "SIMULATION FIRST",
