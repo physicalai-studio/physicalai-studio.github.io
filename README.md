@@ -6,7 +6,8 @@ Physical AI Engineering Studio 홈페이지.
 
 ## 저장소 정보
 
-- 원격: https://github.com/DDUGGOGI/homepage (private)
+- 원격: https://github.com/physicalai-studio/physicalai-studio.github.io (public)
+- 배포: https://physicalai-studio.github.io/
 - 기본 브랜치: `main`
 - git 협업 모드: solo
 
