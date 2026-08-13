@@ -28,6 +28,20 @@ export const mediaManifest = mediaManifestSchema.parse({
     alt: "두 파동원이 만드는 초록빛 간섭 무늬 추상 이미지",
     clearance: "self-produced",
   },
+  // About 페이지 전체 배경 — 퍼져 나가는 파면(WAVEFRONT). 역량의 범위를 말하는 자리.
+  "about-backdrop": {
+    kind: "image",
+    src: "/media/about-field.webp",
+    alt: "한 점에서 퍼져 나가는 초록빛 동심 파면",
+    clearance: "self-produced",
+  },
+  // Contact 페이지 전체 배경 — 홈 CTA 와 같은 간섭 무늬를 넓고 조용하게.
+  "contact-backdrop": {
+    kind: "image",
+    src: "/media/contact-page-field.webp",
+    alt: "넓은 간격으로 퍼진 초록빛 간섭 무늬",
+    clearance: "self-produced",
+  },
   "service-feasibility": {
     kind: "image",
     src: "/media/collision-validation.webp",

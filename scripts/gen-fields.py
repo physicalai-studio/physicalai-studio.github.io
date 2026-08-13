@@ -5,8 +5,10 @@
 필요할 때 파라미터만 바꿔 다시 뽑을 수 있기 때문이다.
 
 생성물:
-  home-hero-field.webp     겹친 고리 — 토로이달 발광체
-  home-contact-field.webp  두 파동원의 간섭 무늬 — 쌍곡선 프린지
+  home-hero-field.webp     겹친 고리 — 토로이달 발광체 (RING)
+  home-contact-field.webp  두 파동원의 간섭 무늬 — 쌍곡선 프린지 (FRINGE)
+  about-field.webp         퍼져 나가는 파면 (WAVEFRONT) — About 페이지 배경
+  contact-page-field.webp  FRINGE 의 조용한 변주 — Contact 페이지 배경
   src/app/icon.png         파비콘 — 히어로와 같은 RING 형태를 작은 크기용으로 다시 그린 것
   src/app/apple-icon.png   iOS 홈 화면 아이콘 (같은 그림, 180px)
 
@@ -163,6 +165,55 @@ def render_icon(path: pathlib.Path, size: int) -> None:
     print(f"{path.name:26s} {size}x{size}  {path.stat().st_size / 1024:.1f} KB")
 
 
+def build_about_field() -> np.ndarray:
+    """퍼져 나가는 파면. 비주얼 컨셉 §4 의 `WAVEFRONT`.
+
+    뜻: **작업 영역의 경계.** 한 점에서 퍼져 나가다 어디까지 닿고 그 너머는 못 닿는다.
+    About 은 역량의 범위를 말하는 자리이므로 이 형태를 쓴다(컨셉 문서 §7 계획).
+
+    페이지 전체 배경이므로 **여백이 주인공**이다 — 형태를 오른쪽 아래로 밀고
+    화면의 대부분을 검게 비운다.
+    """
+    x, y = grid(0.86, 0.78, squash=1.0)
+
+    distance = np.sqrt(x**2 + y**2)
+    angle = np.arctan2(y, x)
+
+    # 동심 호 — 간격이 밖으로 갈수록 벌어진다(에너지가 퍼지며 옅어지는 모습).
+    arcs = 0.5 + 0.5 * np.cos(distance**0.78 * 26.0)
+    arcs = arcs**3.0  # 밝은 띠를 가늘게
+
+    # 부채꼴로 제한 — 사방으로 퍼지면 동심원 과녁이 되어 형태가 죽는다.
+    sector = np.exp(-(((np.arctan2(np.sin(angle - np.deg2rad(215)), np.cos(angle - np.deg2rad(215)))) / 0.95) ** 2))
+
+    # 거리에 따른 감쇠 — 파면은 멀어질수록 약해진다.
+    decay = np.exp(-((distance / 1.30) ** 1.9))
+
+    field = arcs * sector * decay
+    return np.clip(np.clip(field, 0.0, 1.0) ** 1.30 * 0.72, 0.0, 1.0)
+
+
+def build_contact_page_field() -> np.ndarray:
+    """FRINGE 의 조용한 변주. Contact 페이지 배경.
+
+    홈 마무리 CTA 와 **같은 형태·같은 뜻**이되 파장을 넓히고 밝기를 낮췄다 —
+    같은 말을 작은 목소리로 하는 것이다. 새 어휘를 만들지 않는다(컨셉 문서 §4).
+    """
+    x, y = grid(0.78, 0.62, squash=1.0)
+
+    separation = 0.80
+    distance_a = np.sqrt((x + separation) ** 2 + y**2)
+    distance_b = np.sqrt((x - separation) ** 2 + y**2)
+
+    # 파장을 넓게(11 → 6) — 무늬가 성기어 배경으로 물러난다.
+    fringe = 0.5 + 0.5 * np.cos((distance_a - distance_b) * 6.0)
+    fringe = fringe**3.2
+
+    envelope = np.exp(-((np.sqrt((x / 1.10) ** 2 + (y / 0.85) ** 2)) ** 2.2))
+
+    return np.clip(np.clip(fringe * envelope, 0.0, 1.0) ** 1.45 * 0.62, 0.0, 1.0)
+
+
 def apply_ramp(field: np.ndarray) -> np.ndarray:
     """스칼라 밝기장을 초록 램프 색으로 매핑한다."""
     positions = np.array([stop for stop, _ in RAMP], dtype=np.float32)
@@ -197,6 +248,8 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     render("home-hero-field", build_hero_field())
     render("home-contact-field", build_contact_field())
+    render("about-field", build_about_field())
+    render("contact-page-field", build_contact_page_field())
 
     # 파비콘 — Next.js App Router 가 src/app/icon.png 를 자동으로 <link rel="icon"> 으로 만든다.
     app_dir = ROOT / "src" / "app"
