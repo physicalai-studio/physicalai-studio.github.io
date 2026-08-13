@@ -118,7 +118,11 @@ export const mediaManifest = mediaManifestSchema.parse({
   },
   "project-machine-tending": {
     kind: "placeholder",
-    intent: "공작기계 소재 공급 시뮬레이션 대표 컷",
+    intent: "좁은 표적 통과 작업 — 공구 자세와 접근 경로가 보이는 컷",
+  },
+  "project-navigation": {
+    kind: "placeholder",
+    intent: "다중 LiDAR 병합 결과 — 두 스캔이 하나로 합쳐진 점군 화면",
   },
   "project-amr-manipulator": {
     kind: "image",

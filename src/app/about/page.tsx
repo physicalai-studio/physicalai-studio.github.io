@@ -15,16 +15,18 @@ export default function AboutPage() {
     <div className="relative">
       <PageBackdrop slotId="about-backdrop" />
       <div className="relative">
-        {/* 디자인 컨셉 §12: Founder 소개보다 Philosophy 를 먼저 보여준다. */}
-        <Section wide fullHeight>
-          <div>
-            <h1 className="max-w-[16ch] text-(length:--text-headline) leading-[1.05] font-semibold tracking-tight uppercase">
-              {company.philosophy}
-            </h1>
-            <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted">
-              {company.philosophyBody}
-            </p>
-          </div>
+        {/*
+          디자인 컨셉 §12: Founder 소개보다 Philosophy 를 먼저 보여준다.
+          첫 섹션 여백은 다른 본문형 페이지(Services · Projects · Technology)와 같은
+          `pt-40` + `SectionHeading` 규격을 쓴다 — docs/타이포그라피.md §3.
+        */}
+        <Section wide className="pt-40">
+          <SectionHeading
+            as="h1"
+            eyebrow="About"
+            title={company.philosophy}
+            body={company.philosophyBody}
+          />
         </Section>
 
         <Section bordered wide>
