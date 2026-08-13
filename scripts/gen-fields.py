@@ -7,8 +7,8 @@
 생성물:
   home-hero-field.webp     겹친 고리 — 토로이달 발광체 (RING)
   home-contact-field.webp  두 파동원의 간섭 무늬 — 쌍곡선 프린지 (FRINGE)
-  about-field.webp         퍼져 나가는 파면 (WAVEFRONT) — About 페이지 배경
-  contact-page-field.webp  FRINGE 의 조용한 변주 — Contact 페이지 배경
+  about-field.webp         일자 수평파 (PLANE) — About 페이지 배경
+  contact-page-field.webp  V 파 · 뱃머리파 (BOW) — Contact 페이지 배경
   services-field.webp      정상파의 마디 (NODE) — Services 페이지 배경
   projects-field.webp      확정된 코어 (RING) — Projects 페이지 배경
   technology-field.webp    중심이 보이는 파면 (WAVEFRONT) — Technology 페이지 배경
@@ -169,52 +169,51 @@ def render_icon(path: pathlib.Path, size: int) -> None:
 
 
 def build_about_field() -> np.ndarray:
-    """퍼져 나가는 파면. 비주얼 컨셉 §4 의 `WAVEFRONT`.
+    """일자 수평파. 파원이 무한히 먼 **평면파**다.
 
-    뜻: **작업 영역의 경계.** 한 점에서 퍼져 나가다 어디까지 닿고 그 너머는 못 닿는다.
-    About 은 역량의 범위를 말하는 자리이므로 이 형태를 쓴다(컨셉 문서 §7 계획).
+    뜻(컨셉 §2): 파면 — 다만 곡률이 사라진 상태. 방향이 하나로 정해져 흔들리지 않는다.
+    About 은 원칙을 말하는 자리이므로, 퍼져 나가는 파문보다 **가지런한 결**이 맞다.
 
-    페이지 전체 배경이므로 **여백이 주인공**이다 — 형태를 오른쪽 아래로 밀고
-    화면의 대부분을 검게 비운다.
+    구현: `cos(k·y)` 로 수평 띠를 만들고, 아주 약한 기울기를 줘 완전한 평행을 피한다.
+    수학적으로 완벽한 평행선은 인쇄물 무늬처럼 보인다.
     """
-    x, y = grid(0.86, 0.78, squash=1.0)
+    x, y = grid(0.55, 0.50, squash=1.0)
 
-    distance = np.sqrt(x**2 + y**2)
-    angle = np.arctan2(y, x)
+    # 아주 약한 기울기 — 완전 수평이면 벽지가 된다.
+    phase = y * 13.0 + x * 0.9
+    bands = (0.5 + 0.5 * np.cos(phase)) ** 3.4
 
-    # 동심 호 — 간격이 밖으로 갈수록 벌어진다(에너지가 퍼지며 옅어지는 모습).
-    arcs = 0.5 + 0.5 * np.cos(distance**0.78 * 26.0)
-    arcs = arcs**3.0  # 밝은 띠를 가늘게
+    # 오른쪽으로 갈수록 또렷해진다. 왼쪽은 카피 자리라 비운다.
+    lateral = np.clip((x + 0.55) / 1.25, 0.0, 1.0) ** 1.6
+    vertical = np.exp(-((y / 1.15) ** 2.6))
 
-    # 부채꼴로 제한 — 사방으로 퍼지면 동심원 과녁이 되어 형태가 죽는다.
-    sector = np.exp(-(((np.arctan2(np.sin(angle - np.deg2rad(215)), np.cos(angle - np.deg2rad(215)))) / 0.95) ** 2))
-
-    # 거리에 따른 감쇠 — 파면은 멀어질수록 약해진다.
-    decay = np.exp(-((distance / 1.30) ** 1.9))
-
-    field = arcs * sector * decay
-    return np.clip(np.clip(field, 0.0, 1.0) ** 1.30 * 0.72, 0.0, 1.0)
+    field = bands * lateral * vertical
+    return np.clip(np.clip(field, 0.0, 1.0) ** 1.25 * 0.80, 0.0, 1.0)
 
 
 def build_contact_page_field() -> np.ndarray:
-    """FRINGE 의 조용한 변주. Contact 페이지 배경.
+    """V 파(뱃머리파). 움직이는 파원이 뒤로 남기는 쐐기 모양 파면.
 
-    홈 마무리 CTA 와 **같은 형태·같은 뜻**이되 파장을 넓히고 밝기를 낮췄다 —
-    같은 말을 작은 목소리로 하는 것이다. 새 어휘를 만들지 않는다(컨셉 문서 §4).
+    뜻(컨셉 §2): 파면 — **시작점이 있고 거기서부터 퍼진다.**
+    "START A PROJECT" 는 무언가가 출발하는 자리이므로 이 형태를 쓴다.
+
+    구현: 꼭짓점에서 `|y|` 와 `x` 의 선형 결합을 위상으로 삼으면 V 자 파면이 나온다.
+    꼭짓점 앞쪽(파원이 아직 지나지 않은 영역)은 비운다.
     """
-    x, y = grid(0.78, 0.62, squash=1.0)
+    x, y = grid(0.30, 0.52, squash=1.0)
 
-    separation = 0.80
-    distance_a = np.sqrt((x + separation) ** 2 + y**2)
-    distance_b = np.sqrt((x - separation) ** 2 + y**2)
+    # 쐐기 각도 — 값이 작을수록 V 가 벌어진다.
+    slope = 0.62
+    phase = (np.abs(y) - x * slope) * 15.0
+    wedge = (0.5 + 0.5 * np.cos(phase)) ** 3.0
 
-    # 파장을 넓게(11 → 6) — 무늬가 성기어 배경으로 물러난다.
-    fringe = 0.5 + 0.5 * np.cos((distance_a - distance_b) * 6.0)
-    fringe = fringe**3.2
+    # 쐐기 안쪽만 남긴다 — 꼭짓점 앞은 파면이 아직 도달하지 않은 자리다.
+    inside = np.clip((x * slope - np.abs(y) + 0.30) / 0.35, 0.0, 1.0)
 
-    envelope = np.exp(-((np.sqrt((x / 1.10) ** 2 + (y / 0.85) ** 2)) ** 2.2))
+    decay = np.exp(-((np.sqrt(x**2 + y**2) / 1.55) ** 2.0))
 
-    return np.clip(np.clip(fringe * envelope, 0.0, 1.0) ** 1.45 * 0.62, 0.0, 1.0)
+    field = wedge * inside * decay
+    return np.clip(np.clip(field, 0.0, 1.0) ** 1.20 * 0.82, 0.0, 1.0)
 
 
 # ── 본문 페이지 배경 3종 ──────────────────────────────────────────────
@@ -244,28 +243,26 @@ def build_services_field() -> np.ndarray:
 
 
 def build_projects_field() -> np.ndarray:
-    """확정된 코어. 비주얼 컨셉 §4 의 `RING` 을 **코어 중심으로** 쓴 것.
+    """두 수평 직교 간섭파. 90° 로 교차하는 평면파 두 개가 만드는 격자.
 
-    뜻: §2 의 **측정 · 확정** — 펼쳐져 있던 가능성이 하나의 값으로 좁혀진다.
-    Projects 는 "무엇이 확인되었는가"를 기록하는 자리라 고리보다 **중심**이 주인공이다.
+    뜻(컨셉 §2): 간섭 — 다만 **두 조건이 동시에 걸리는** 경우다.
+    밝은 점은 두 조건이 함께 성립한 지점, 어두운 마디는 하나라도 어긋난 지점이다.
+    Projects 는 "무엇이 확인되었는가"를 기록하는 자리이므로 **계측 격자**처럼 읽히는 이 형태가 맞다.
 
-    새 어휘가 아니다. 같은 `RING` 에서 강조점을 테두리에서 코어로 옮긴 것이다.
+    구현: `cos(kx) · cos(ky)` 의 절댓값. 두 평면파의 곱이 격자 마디를 만든다.
     """
-    x, y = grid(0.70, 0.40, squash=1.02)
+    x, y = grid(0.66, 0.46, squash=1.0)
+
+    wave_x = np.cos(x * 12.0)
+    wave_y = np.cos(y * 12.0)
+    lattice = np.abs(wave_x * wave_y) ** 1.9
+
+    # 중심에서 멀어질수록 옅어진다 — 격자가 화면을 다 덮으면 방충망이 된다.
     distance = np.sqrt(x**2 + y**2)
-    angle = np.arctan2(y, x)
+    envelope = np.exp(-((distance / 0.95) ** 2.0))
 
-    # 코어 — 확정된 하나의 값.
-    core = np.exp(-((distance / 0.20) ** 1.8))
-
-    # 코어를 감싸는 고리 두 겹 — 좁혀 들어온 흔적.
-    outer = ring(x, y, radius=0.58, width=0.075) * angular_weight(x, y, 200, 0.55)
-    mid = ring(x, y, radius=0.34, width=0.048) * angular_weight(x, y, 40, 0.45)
-
-    field = np.maximum(core, np.maximum(outer * 0.72, mid * 0.62))
-    field *= np.exp(-((distance / 1.35) ** 2.4))
-
-    return np.clip(np.clip(field, 0.0, 1.0) ** 1.20 * 0.90, 0.0, 1.0)
+    field = lattice * envelope
+    return np.clip(np.clip(field, 0.0, 1.0) ** 1.15 * 0.84, 0.0, 1.0)
 
 
 def build_technology_field() -> np.ndarray:

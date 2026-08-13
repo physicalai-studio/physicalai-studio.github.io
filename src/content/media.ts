@@ -32,14 +32,14 @@ export const mediaManifest = mediaManifestSchema.parse({
   "about-backdrop": {
     kind: "image",
     src: "/media/about-field.webp",
-    alt: "한 점에서 퍼져 나가는 초록빛 동심 파면",
+    alt: "완만하게 기운 초록빛 수평 파동 띠",
     clearance: "self-produced",
   },
   // Contact 페이지 전체 배경 — 홈 CTA 와 같은 간섭 무늬를 넓고 조용하게.
   "contact-backdrop": {
     kind: "image",
     src: "/media/contact-page-field.webp",
-    alt: "넓은 간격으로 퍼진 초록빛 간섭 무늬",
+    alt: "왼쪽 꼭짓점에서 퍼져 나가는 초록빛 V 자 파면",
     clearance: "self-produced",
   },
   // 본문 페이지 전체 배경 3종 — About·Contact 보다 밝고 파동의 중심이 화면 안에 있다.
@@ -52,7 +52,7 @@ export const mediaManifest = mediaManifestSchema.parse({
   "projects-backdrop": {
     kind: "image",
     src: "/media/projects-field.webp",
-    alt: "고리에 감싸인 밝은 초록 코어",
+    alt: "두 직교 평면파가 만드는 초록빛 격자 간섭 무늬",
     clearance: "self-produced",
   },
   "technology-backdrop": {
