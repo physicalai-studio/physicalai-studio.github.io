@@ -1,13 +1,14 @@
 import { PageBackdrop } from "@/components/section/PageBackdrop";
 import { Section } from "@/components/section/Section";
 import { SectionHeading } from "@/components/section/SectionHeading";
+import { contactDescription, contactPage } from "@/content/contact";
 import { site } from "@/content/site";
 import { telHref } from "@/lib/contact";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
-  title: "Start a Project",
-  description: "로봇이 무엇을 해야 하는지 알려주시면 검토 방향을 회신드립니다.",
+  title: contactPage.title,
+  description: contactDescription,
   path: "/contact",
 });
 
@@ -24,11 +25,9 @@ export default function ContactPage() {
       <Section wide fullHeight className="relative">
         <div>
           <h1 className="text-(length:--text-headline) leading-[1.05] font-semibold tracking-tight uppercase">
-            Start a Project
+            {contactPage.title}
           </h1>
-          <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted">
-            로봇이 무엇을 해야 하는지 알려주세요. 검토 가능한 범위와 접근 방향을 회신드립니다.
-          </p>
+          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted">{contactPage.body}</p>
 
           <div className="mt-16 grid gap-10 border-t border-line pt-8 sm:grid-cols-2">
             <div>
