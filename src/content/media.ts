@@ -191,6 +191,12 @@ export const mediaManifest = mediaManifestSchema.parse({
     alt: "천장 반송 레일과 조명이 격자를 이루는 자동화 설비 내부",
     clearance: "anonymized",
   },
+  "project-physics-tuning": {
+    kind: "image",
+    src: "/media/real-sim-testbed.webp",
+    alt: "실기 로봇의 파지 장면과 같은 장면의 시뮬레이션 · 점군 재구성을 나란히 놓은 대조 컷",
+    clearance: "self-produced",
+  },
   "project-drive-alignment": {
     kind: "image",
     src: "/media/drive-alignment.webp",

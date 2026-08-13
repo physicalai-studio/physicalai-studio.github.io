@@ -11,6 +11,7 @@
 | `agility-a01_urdf.png`           | Isaac Sim — 휴머노이드 하체 충돌 메시 · 조인트                  |
 | `sim_testbed.jpg`                | 시뮬레이션 테스트베드 — 7축 팔의 충돌 형상 오버레이와 파지 대상 |
 | `motion_devece_mk1intestbed.png` | 이동 베이스 테스트베드 — 구동 휠·캐스터와 회전 관절 축 표시     |
+| `real_sim_testbed.png`           | 실기 파지 장면과 같은 장면의 시뮬레이션·점군 재구성 대조 컷     |
 
 ## 익명화 처리 (anonymized)
 
