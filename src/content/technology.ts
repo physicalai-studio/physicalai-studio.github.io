@@ -13,8 +13,23 @@ export const technologyGroups = [
     items: [
       { name: "NVIDIA Isaac Sim", role: "물리 기반 로봇 시뮬레이션 환경의 기본 플랫폼" },
       { name: "NVIDIA Isaac Lab", role: "강화학습 · 모방학습 실험 환경 구성" },
+      {
+        name: "Newton",
+        role: "접촉과 마찰을 더 세밀하게 두는 오픈소스 물리 엔진. 같은 장면을 다른 엔진으로 다시 돌려 결론이 엔진에 의존하는지 본다",
+      },
+      {
+        name: "NeRD(Neural Robot Dynamics)",
+        role: "해석적 솔버 대신 학습된 동역학으로 다음 상태를 예측한다. 실기에서 잰 차이를 동역학 자체에 되먹이는 경로",
+      },
+      {
+        name: "Isaac GR00T",
+        role: "휴머노이드 로봇 파운데이션 모델. 시뮬레이션에서 만든 데이터로 학습한 정책을 검증 루프에 태운다",
+      },
+      {
+        name: "Isaac Lab-Arena",
+        role: "정책을 대규모로 평가하는 프레임워크. '되더라'가 아니라 어느 조건에서 몇 %로 되는지를 재는 자리",
+      },
       { name: "OpenUSD", role: "로봇 · 설비 · 환경 자산의 공통 기술 포맷" },
-      { name: "PhysX", role: "관절 구동 게인 · 강성 단위 환산과 적분 안정성 확인" },
       { name: "URDF / CAD 파이프라인", role: "STEP 자산을 시뮬레이션에서 도는 모델로 변환" },
     ],
   },
