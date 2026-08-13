@@ -1,0 +1,47 @@
+/**
+ * 디자인 토큰 (Design Tokens) — 디자인_컨셉.md §2 · §6 의 코드화
+ *
+ * 원칙:
+ * - 무채색 중심. 액센트는 1개만 두고 상태 표시 · CTA hover · 데이터 시각화에만 쓴다.
+ * - 그라디언트 토큰을 두지 않는다 (디자인 컨셉 §17 금지 항목).
+ * - 기본 모서리 반경은 0. 라운드가 필요하면 ADR 로 예외를 남긴다.
+ */
+@theme {
+  /*
+   * 색 — 무채색 6단 + 액센트 1.
+   * 액센트는 이미지 듀오톤의 하이라이트(#89f7ba)와 같은 계열로 맞춘다.
+   * 이미지와 UI 가 같은 초록을 쓸 때 화면이 한 몸으로 읽힌다.
+   */
+  --color-bg: #08090a;
+  --color-surface: #0e1113;
+  --color-line: #1f2427;
+  --color-faint: #565c61;
+  --color-muted: #8b9196;
+  --color-fg: #f2f4f5;
+  --color-accent: #74eeae;
+
+  /*
+   * 폰트 — Phase 1 은 시스템 폰트 스택으로 시작한다.
+   * 한글 웹폰트는 용량이 커서 서브셋 자산이 준비된 뒤 도입한다 (debt-001).
+   */
+  --font-sans:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  /* 타이포 — 뷰포트에 따라 유동. 디자인 컨셉의 "SCALE" 표현 수단 */
+  --text-display: clamp(2.75rem, 9vw, 8rem);
+  --text-headline: clamp(2rem, 5.5vw, 4.5rem);
+  --text-title: clamp(1.375rem, 2.5vw, 2rem);
+  --text-eyebrow: 0.75rem;
+
+  /* 섹션 세로 리듬 */
+  --spacing-section: 8rem;
+
+  /* 모서리 — 기본 0 (§17 "과도한 Rounded Corner" 금지) */
+  --radius-none: 0px;
+
+  /* 모션 — 절제된 전환만 허용 (디자인 컨셉 §8) */
+  --ease-out-quiet: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-reveal: 700ms;
+}

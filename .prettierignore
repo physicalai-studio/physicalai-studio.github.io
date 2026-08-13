@@ -1,0 +1,6 @@
+.next/
+out/
+node_modules/
+package-lock.json
+docs/claude_guideline/
+next-env.d.ts

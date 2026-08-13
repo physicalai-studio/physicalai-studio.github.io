@@ -1,0 +1,54 @@
+# 의존성
+node_modules/
+.pnp
+.pnp.js
+
+# 빌드 산출물
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+public/build/
+
+# 환경 변수 · 비밀
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# 로그
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 에디터 · OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# coding 번들: OMC 런타임 상태 비추적
+.omc/
+
+# Next.js
+/.next/
+/out/
+next-env.d.ts
+
+# 미디어 원본 — 저장소에 커밋하지 않는다 (ADR-0005)
+*.mp4
+*.webm
+*.mov
+*.mkv
+
+# TypeScript 증분 빌드 캐시
+tsconfig.tsbuildinfo
+
+# 하네스 설치 스크립트가 만든 백업
+.claude/settings.json.bak

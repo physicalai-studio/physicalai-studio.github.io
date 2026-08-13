@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      # 하네스 검사는 빌드 이전에 돌린다 — out/·.next/ 산출물이 스캔에 섞이면 오탐이 난다.
+      - name: ADR 필수 필드 검사
+        run: bash docs/claude_guideline/coding/checks/adr-fields.sh .
+
+      - name: 부채 마커 검사
+        run: bash docs/claude_guideline/debt/checks/debt-marker.sh src
+
+      - name: 금지 패턴 검사
+        run: bash docs/claude_guideline/coding/checks/banned-pattern.sh src
+
+      - name: 중복 함수 시그니처 검사
+        run: bash docs/claude_guideline/coding/checks/dup-signature.sh src
+
+      - name: Build
+        run: npm run build

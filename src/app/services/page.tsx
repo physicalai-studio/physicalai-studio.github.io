@@ -1,0 +1,84 @@
+import { Reveal } from "@/components/common/Reveal";
+import { MediaSlot } from "@/components/media/MediaSlot";
+import { Section } from "@/components/section/Section";
+import { SectionHeading } from "@/components/section/SectionHeading";
+import { capabilityGroups } from "@/content/capabilities";
+import { services } from "@/content/services";
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata = buildPageMetadata({
+  title: "Services",
+  description: "로봇 적용 가능성 검토부터 가상 시운전, 디지털 트윈, Physical AI 테스트베드까지.",
+  path: "/services",
+});
+
+export default function ServicesPage() {
+  return (
+    <>
+      <Section wide className="pt-40">
+        <SectionHeading
+          as="h1"
+          eyebrow="Services"
+          title="Validate Before You Build."
+          body="각 서비스는 기술이 아니라 고객이 얻는 결과를 기준으로 구성했습니다."
+        />
+      </Section>
+
+      {/*
+        검증 항목 — 이 사이트가 "3D 영상이 아니라 엔지니어링 검증"이라고 말하는 근거.
+        추상적인 주장 대신 실제로 측정하는 항목을 나열한다.
+      */}
+      <Section bordered wide>
+        <Reveal>
+          <SectionHeading eyebrow="What We Measure" title="우리가 실제로 재는 것" />
+          <div className="mt-12 grid gap-px border border-line bg-line md:grid-cols-2 lg:grid-cols-3">
+            {capabilityGroups.map((group) => (
+              <div key={group.id} className="bg-bg p-6">
+                <p className="font-mono text-(length:--text-eyebrow) tracking-[0.3em] text-faint uppercase">
+                  {group.title}
+                </p>
+                <ul className="mt-6 space-y-3">
+                  {group.items.map((item) => (
+                    <li key={item} className="text-sm leading-relaxed text-muted">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+      </Section>
+
+      {services.map((service) => (
+        <Section key={service.id} id={service.id} bordered wide>
+          <Reveal>
+            <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-20">
+              <div>
+                <p className="font-mono text-(length:--text-eyebrow) tracking-[0.3em] text-faint">
+                  {service.index}
+                </p>
+                <h2 className="mt-6 text-(length:--text-title) leading-tight font-semibold tracking-tight uppercase">
+                  {service.title}
+                </h2>
+                <p className="mt-2 text-sm text-faint">{service.titleKo}</p>
+                <p className="mt-8 text-lg leading-relaxed">{service.outcome}</p>
+                <p className="mt-4 leading-relaxed text-muted">{service.detail}</p>
+
+                <ul className="mt-10 border-t border-line">
+                  {service.deliverables.map((deliverable) => (
+                    <li key={deliverable} className="border-b border-line py-4 text-sm text-muted">
+                      {deliverable}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <MediaSlot slotId={service.mediaSlot} className="aspect-4/3 w-full" />
+            </div>
+          </Reveal>
+        </Section>
+      ))}
+    </>
+  );
+}
