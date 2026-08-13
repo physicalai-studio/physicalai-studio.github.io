@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { company } from "./company";
-import { getMediaAsset, isPublishableAsset, mediaManifest } from "./media";
+import { caseTextureSlot, getMediaAsset, isPublishableAsset, mediaManifest } from "./media";
 import { allProjects, findProjectBySlug, getVisibleProjects } from "./projects";
 import { mediaAssetSchema } from "./schema";
 import { services } from "./services";
@@ -129,6 +129,24 @@ describe("제3자 자산 출처 표기", () => {
       if (asset.kind !== "placeholder" && asset.clearance === "licensed") {
         expect(asset.credit, `${slotId} 에 credit 없음`).toBeDefined();
       }
+    }
+  });
+});
+
+describe("케이스 스터디 텍스처", () => {
+  it("같은 슬러그는 항상 같은 텍스처를 준다", () => {
+    expect(caseTextureSlot("amr-navigation-stack")).toBe(caseTextureSlot("amr-navigation-stack"));
+  });
+
+  it("배정된 슬롯이 매니페스트에 실제로 존재한다", () => {
+    // 해시 범위와 등록 개수가 어긋나면 플레이스홀더로 폴백해 조용히 깨진다.
+    for (const slug of [
+      "precision-orientation-control",
+      "amr-navigation-stack",
+      "x",
+      "매우-긴-슬러그-이름",
+    ]) {
+      expect(getMediaAsset(caseTextureSlot(slug)).kind).toBe("image");
     }
   });
 });

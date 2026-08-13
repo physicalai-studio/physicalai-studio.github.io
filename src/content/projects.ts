@@ -1,3 +1,4 @@
+import { caseTextureSlot } from "./media";
 import { projectSchema, type Project } from "./schema";
 
 /**
@@ -45,7 +46,8 @@ const projects: Project[] = [
       "짐벌락 구간 판정, 관절해가 존재하지 않는 자세 dead-band 의 위치와 폭, 경로 전 구간의 해 존재 여부, 목 회전 시 시선축이 실제로 불변인지를 확인했습니다.",
     result:
       "수평 자세가 오일러 각 표현의 특이점(짐벌락) 상태임을 확인하고, 그 조건에서 고정할 수밖에 없는 축을 특정했습니다. 특정 X 구간에서 관절해가 사라져 벤더 알람이 발생하는 현상을 재현하고, 우회 경로를 3모드(이상적 직선 / 밴드 구간 관절 이동 / 최소 기울기 직선)로 설계해 **전 구간에 해가 있을 때만 실행**되도록 만들었습니다. 로봇 결함이 아니라 자세 표현의 구조적 한계였습니다.",
-    mediaSlot: "project-machine-tending",
+    // 실제 캡처 미확보 — 추상 텍스처로 대체(debt-008)
+    mediaSlot: caseTextureSlot("precision-orientation-control"),
   },
   {
     slug: "whole-body-collision-validation",
@@ -80,7 +82,8 @@ const projects: Project[] = [
       "회전 제어에서 각도 오차의 wrap-around 처리, 두 센서 외부 파라미터의 정합, 병합 과정에서 생기는 정보 손실 지점(같은 각도 빈에 앞뒤 점이 함께 있을 때 뒤가 사라지는 문제)을 확인했습니다.",
     result:
       "두 센서가 강체로 고정되어 외부 파라미터가 상수라는 점을 이용해 **정합(ICP)을 런타임이 아닌 사전 캘리브레이션에서 1회만** 수행하도록 설계했습니다. 주행 스택은 SLAM · 로컬라이제이션 · 플래너 · 안전 정지 · 운용 설계 범위(ODD) 패키지로 나누어, 어디까지 동작을 보증하는지가 코드 구조에 드러나게 했습니다.",
-    mediaSlot: "project-navigation",
+    // 실제 캡처 미확보 — 추상 텍스처로 대체(debt-008)
+    mediaSlot: caseTextureSlot("amr-navigation-stack"),
   },
 ].map((project) => projectSchema.parse(project));
 

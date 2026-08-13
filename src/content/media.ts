@@ -12,7 +12,45 @@ import { mediaManifestSchema, type MediaAsset } from "./schema";
  *
  * 각 슬롯에 필요한 자산의 촬영 규격은 docs/미디어_자산_명세서.md 를 따른다.
  */
+/**
+ * 케이스 스터디용 추상 텍스처 20종 (scripts/gen-case-textures.py).
+ *
+ * 실제 캡처가 없는 케이스 스터디의 자리를 채운다. **사진처럼 보이지 않을 만큼 뭉갠**
+ * 추상 텍스처이며, 실제 결과물이 준비되면 교체한다(debt-008).
+ */
+const CASE_TEXTURE_COUNT = 20;
+
+const caseTextures = Object.fromEntries(
+  Array.from({ length: CASE_TEXTURE_COUNT }, (_, index) => {
+    const number = String(index + 1).padStart(2, "0");
+    return [
+      `case-${number}`,
+      {
+        kind: "image" as const,
+        src: `/media/case/case-${number}.webp`,
+        alt: "초록빛 광장(光場)을 흐린 추상 텍스처",
+        clearance: "self-produced" as const,
+      },
+    ];
+  }),
+);
+
+/**
+ * 슬러그로 텍스처 하나를 고른다.
+ *
+ * 같은 슬러그면 항상 같은 텍스처가 나오고, 슬러그가 다르면 대체로 다른 텍스처가 나온다 —
+ * 케이스 스터디가 늘어도 손으로 배정할 필요가 없고, 빌드마다 그림이 바뀌지도 않는다.
+ */
+export function caseTextureSlot(slug: string): string {
+  let hash = 0;
+  for (const character of slug) {
+    hash = (hash * 31 + character.charCodeAt(0)) % 100003;
+  }
+  return `case-${String((hash % CASE_TEXTURE_COUNT) + 1).padStart(2, "0")}`;
+}
+
 export const mediaManifest = mediaManifestSchema.parse({
+  ...caseTextures,
   // 절차적으로 생성한 배경(scripts/gen-fields.py). 사진이 아니라 수식이라 라이선스가 자유롭고
   // 사이트 듀오톤과 정확히 같은 초록을 쓴다. 실제 시뮬레이션 영상이 준비되면 교체한다(debt-007).
   "home-hero": {
