@@ -1,12 +1,24 @@
-import { capabilityGroupSchema } from "./schema";
+import { capabilityGroupSchema, sectionHeadingSchema } from "./schema";
 
 /**
- * 검증 항목 — "우리가 실제로 재는 것".
+ * 검증 항목 — 물리가 무엇을 허락하는지 알아내기 위해 실제로 재는 것들.
  *
  * 시뮬레이션을 데모 영상이 아니라 **계측 장비**로 쓴다는 주장을 구체화한 목록이다.
  * 각 항목은 실제 수행 근거가 있는 것만 둔다 (근거 대장: 저장소 밖 비공개 문서 — docs/사업_정의.md §5 참조).
  * 근거 없는 항목을 추가하지 않는다 — 이 목록의 신뢰도가 사이트 전체의 신뢰도다.
  */
+/**
+ * 이 목록을 여는 제목.
+ *
+ * 컴포넌트 안에 문자열로 박혀 있던 것을 콘텐츠 계층으로 옮겼다(ADR-0003).
+ * **"우리가 무엇을 하는가"가 아니라 "물리가 무엇을 허락하는가"** 를 말한다 —
+ * 결론의 주어가 우리가 아니라는 것이 이 사업의 전제다(docs/사업_정의.md).
+ */
+export const capabilitiesHeading = sectionHeadingSchema.parse({
+  eyebrow: "What We Measure",
+  title: "We Find What Physics Allows.",
+});
+
 export const capabilityGroups = [
   {
     id: "kinematics",

@@ -3,7 +3,7 @@ import { MediaSlot } from "@/components/media/MediaSlot";
 import { PageBackdrop } from "@/components/section/PageBackdrop";
 import { Section } from "@/components/section/Section";
 import { SectionHeading } from "@/components/section/SectionHeading";
-import { capabilityGroups } from "@/content/capabilities";
+import { capabilitiesHeading, capabilityGroups } from "@/content/capabilities";
 import { services } from "@/content/services";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -33,7 +33,10 @@ export default function ServicesPage() {
       */}
         <Section bordered wide>
           <Reveal>
-            <SectionHeading eyebrow="What We Measure" title="우리가 실제로 재는 것" />
+            <SectionHeading
+              eyebrow={capabilitiesHeading.eyebrow}
+              title={capabilitiesHeading.title}
+            />
             <div className="mt-12 grid gap-px border border-line bg-line md:grid-cols-2 lg:grid-cols-3">
               {capabilityGroups.map((group) => (
                 <div key={group.id} className="bg-bg p-6">

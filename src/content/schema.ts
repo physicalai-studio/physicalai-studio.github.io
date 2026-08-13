@@ -251,7 +251,7 @@ export const navItemSchema = z.object({
 });
 
 /**
- * 검증 항목 묶음 — "우리가 실제로 재는 것".
+ * 검증 항목 묶음 — "우리가 무엇을 재서 물리가 무엇을 허락하는지 밝히는가".
  * 수행 근거가 있는 항목만 넣는다(근거 대장: 저장소 밖 비공개 문서).
  */
 export const capabilityGroupSchema = z.object({
@@ -289,12 +289,15 @@ export const companySchema = z.object({
   }),
 });
 
-/** 홈의 섹션 하나를 여는 제목 블록. 본문은 선택이다. */
-export const homeSectionSchema = z.object({
+/** 섹션 하나를 여는 제목 블록. 본문은 선택이다. */
+export const sectionHeadingSchema = z.object({
   eyebrow: nonEmpty,
   title: nonEmpty,
   body: nonEmpty.optional(),
 });
+
+/** 홈의 섹션도 같은 모양이다. 이름만 유지한다. */
+export const homeSectionSchema = sectionHeadingSchema;
 
 /**
  * 홈 페이지 문구 (가이드 §8).
@@ -342,4 +345,5 @@ export type Site = z.infer<typeof siteSchema>;
 export type Company = z.infer<typeof companySchema>;
 export type Home = z.infer<typeof homeSchema>;
 export type HomeSection = z.infer<typeof homeSectionSchema>;
+export type SectionHeadingContent = z.infer<typeof sectionHeadingSchema>;
 export type WorkflowStep = z.infer<typeof workflowStepSchema>;
