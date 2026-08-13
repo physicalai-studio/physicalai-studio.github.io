@@ -63,7 +63,7 @@ export const home = homeSchema.parse({
   contact: {
     eyebrow: "07",
     title: "Start a Project",
-    body: "로봇이 무엇을 해야 하는지, 어떤 환경에서 하는지 알려주세요. 검토에 필요한 시뮬레이션 자산과 환경 시나리오는 저희가 만들어 결과와 함께 드립니다.",
+    body: "로봇이 무엇을 해야 하는지, 어떤 환경에서 어떤 순서로 하는지 알려주세요. 그 시나리오를 그대로 돌려볼 수 있는 디지털 테스트베드를 만들어 드립니다.",
     mediaSlot: "home-contact",
   },
 });
