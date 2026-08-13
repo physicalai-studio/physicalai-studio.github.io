@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { hasUnparsedMarkup } from "@/lib/richText";
 import { company } from "./company";
 import { caseTextureSlot, getMediaAsset, isPublishableAsset, mediaManifest } from "./media";
 import { allProjects, findProjectBySlug, getVisibleProjects } from "./projects";
@@ -129,6 +130,70 @@ describe("제3자 자산 출처 표기", () => {
       if (asset.kind !== "placeholder" && asset.clearance === "licensed") {
         expect(asset.credit, `${slotId} 에 credit 없음`).toBeDefined();
       }
+    }
+  });
+});
+
+describe("케이스 스터디 본문 마크업", () => {
+  const bodyFields = ["problem", "environment", "simulation", "verification", "result"] as const;
+
+  it("본문의 강조 마크업이 모두 해석된다", () => {
+    // 2026-08-13: `**강조**` 가 렌더러 없이 배포되어 화면에 별표가 그대로 나갔다.
+    // 짝이 맞지 않는 마크업도 같은 증상을 만들므로 여기서 함께 잡는다.
+    for (const project of allProjects) {
+      for (const field of bodyFields) {
+        for (const paragraph of project[field]) {
+          expect(hasUnparsedMarkup(paragraph), `${project.slug}.${field}: ${paragraph}`).toBe(
+            false,
+          );
+        }
+      }
+      for (const lesson of project.lessons) {
+        expect(hasUnparsedMarkup(lesson.body), `${project.slug}.lessons`).toBe(false);
+      }
+    }
+  });
+
+  it("다이어그램과 계측 요약에는 마크업을 쓰지 않는다", () => {
+    // 이 값들은 평문으로 렌더된다(ArchitectureDiagram · metrics 그리드).
+    // 강조를 적어도 굵어지지 않고 별표만 남는다.
+    for (const project of allProjects) {
+      const plainStrings = [
+        project.architecture.caption,
+        project.architecture.feedback,
+        ...project.architecture.columns.flatMap((column) => [
+          column.label,
+          ...column.nodes.flatMap((node) => [node.label, node.note ?? ""]),
+        ]),
+        ...project.metrics.flatMap((metric) => [metric.value, metric.label, metric.note ?? ""]),
+        ...project.diagrams.flatMap((diagram) => [
+          diagram.title,
+          diagram.caption,
+          ...(diagram.kind === "interfaces"
+            ? diagram.edges.flatMap((edge) => [
+                edge.from,
+                edge.to,
+                edge.payload,
+                edge.rate ?? "",
+                edge.boundary,
+              ])
+            : [
+                diagram.returnLabel,
+                ...diagram.steps.flatMap((step) => [step.label, step.note ?? ""]),
+              ]),
+        ]),
+      ];
+      for (const value of plainStrings) {
+        expect(value.includes("*"), `${project.slug}: ${value}`).toBe(false);
+      }
+    }
+  });
+
+  it("모든 케이스에 되돌아오는 경로가 있다", () => {
+    // 계측이 모델로 돌아오지 않는 구성은 이 스튜디오가 파는 것이 아니다(사업_정의.md §4).
+    for (const project of allProjects) {
+      expect(project.architecture.feedback.length).toBeGreaterThan(0);
+      expect(project.architecture.columns.length).toBeGreaterThanOrEqual(3);
     }
   });
 });

@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
-import { MediaSlot } from "@/components/media/MediaSlot";
+import { RichText } from "@/components/common/RichText";
+import { ArchitectureDiagram } from "@/components/project/ArchitectureDiagram";
+import { CaseDiagram } from "@/components/project/CaseDiagram";
 import { Section } from "@/components/section/Section";
 import { SectionHeading } from "@/components/section/SectionHeading";
 import { allProjects, findProjectBySlug } from "@/content/projects";
@@ -66,8 +68,48 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         ) : null}
       </Section>
 
+      {/*
+        케이스 스터디 상단은 사진이 아니라 **구성도**다.
+        이 자리에서 답해야 하는 질문은 "무엇이 예쁘게 보이는가"가 아니라
+        "무엇을 어디에 연결했고, 계측이 어디로 되돌아가는가"이기 때문이다.
+        (목록 카드의 이미지는 그대로 두어 훑어보는 화면의 리듬을 유지한다.)
+      */}
       <Section wide>
-        <MediaSlot slotId={project.mediaSlot} className="aspect-16/9 w-full" />
+        <SectionHeading as="h2" eyebrow="Architecture" title="SIMULATION ARCHITECTURE" />
+        <div className="mt-12">
+          <ArchitectureDiagram architecture={project.architecture} />
+        </div>
+
+        {/*
+          구성도가 "무엇이 있는가"를 그렸다면, 아래는 **계층 사이**를 그린다.
+          시뮬레이션 결함이 사는 곳이 대개 경계이기 때문이다(단위 · 부호 · 주기 · 좌표계).
+        */}
+        {project.diagrams.map((diagram) => (
+          <div key={diagram.title} className="mt-24">
+            <CaseDiagram diagram={diagram} />
+          </div>
+        ))}
+
+        <p className="mt-24 font-mono text-(length:--text-eyebrow) tracking-[0.3em] text-faint uppercase">
+          measured
+        </p>
+        <dl className="mt-8 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+          {project.metrics.map((metric) => (
+            <div key={metric.label} className="border-t border-line pt-6">
+              <dt className="font-mono text-[0.6875rem] tracking-[0.2em] text-faint uppercase">
+                {metric.label}
+              </dt>
+              <dd>
+                <p className="mt-3 text-(length:--text-title) leading-none font-semibold tracking-tight">
+                  {metric.value}
+                </p>
+                {metric.note ? (
+                  <p className="mt-3 text-xs leading-relaxed text-faint">{metric.note}</p>
+                ) : null}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </Section>
 
       <Section bordered>
@@ -77,10 +119,35 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               <dt className="font-mono text-(length:--text-eyebrow) tracking-[0.3em] text-faint uppercase">
                 {entry.label}
               </dt>
-              <dd className="leading-relaxed md:col-span-2">{entry.body}</dd>
+              <dd className="space-y-5 leading-relaxed text-muted md:col-span-2">
+                {entry.body.map((paragraph, index) => (
+                  <p key={index}>
+                    <RichText text={paragraph} />
+                  </p>
+                ))}
+              </dd>
             </div>
           ))}
         </dl>
+      </Section>
+
+      <Section bordered>
+        <SectionHeading
+          as="h2"
+          eyebrow="Notes"
+          title="ENGINEERING NOTES"
+          body="이 프로젝트가 남긴 판단입니다. 다음 프로젝트에서 같은 자리를 다시 밟지 않기 위해 적어 둡니다."
+        />
+        <ul className="mt-12 border-t border-line">
+          {project.lessons.map((lesson) => (
+            <li key={lesson.title} className="grid gap-4 border-b border-line py-10 md:grid-cols-3">
+              <h3 className="leading-snug font-semibold">{lesson.title}</h3>
+              <p className="leading-relaxed text-muted md:col-span-2">
+                <RichText text={lesson.body} />
+              </p>
+            </li>
+          ))}
+        </ul>
       </Section>
     </>
   );

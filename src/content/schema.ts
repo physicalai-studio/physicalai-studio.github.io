@@ -93,6 +93,103 @@ export const serviceSchema = z.object({
   mediaSlot: nonEmpty,
 });
 
+/**
+ * 아키텍처 다이어그램의 노드 1개.
+ *
+ * 다이어그램은 그림 파일이 아니라 **선과 글자로 그린다**(디자인 컨셉 §17 — 이미지 안에 글자를
+ * 굽지 않는다). 그래서 라벨은 한 줄에 들어갈 길이로 제한하고, 설명은 `note` 로 내린다.
+ */
+export const architectureNodeSchema = z.object({
+  label: z.string().min(1).max(28, "노드 라벨은 한 줄에 들어가야 한다(28자 이내)"),
+  note: nonEmpty.optional(),
+});
+
+/** 다이어그램의 세로 계층 하나. 왼쪽에서 오른쪽으로 신호가 흐른다. */
+export const architectureColumnSchema = z.object({
+  /** 계층 이름. 대문자 영문 라벨 (타이포그래피 §5). */
+  label: nonEmpty,
+  nodes: z.array(architectureNodeSchema).min(1).max(4),
+  /** 이 케이스의 무게 중심이 되는 계층. 액센트로 표시하며 다이어그램당 하나만 둔다. */
+  isFocus: z.boolean().optional(),
+});
+
+/**
+ * 시뮬레이션 아키텍처 다이어그램.
+ *
+ * `feedback` 을 선택 항목으로 두지 않는다 — 계측이 모델로 되돌아가지 않는 구성은
+ * 이 스튜디오가 파는 것(docs/사업_정의.md §4 닫힌 루프)이 아니기 때문이다.
+ */
+export const architectureSchema = z
+  .object({
+    columns: z.array(architectureColumnSchema).min(3).max(5),
+    /** 되돌아오는 경로 — 계측 결과가 어디로 다시 들어가는지. */
+    feedback: nonEmpty,
+    caption: nonEmpty,
+  })
+  .refine((diagram) => diagram.columns.filter((column) => column.isFocus).length <= 1, {
+    message: "isFocus 는 다이어그램당 하나만 둔다",
+  });
+
+/**
+ * 경계 하나를 지나는 신호.
+ *
+ * 시뮬레이션에서 결함이 사는 곳은 계층 안이 아니라 **계층 사이**다 — 단위 · 부호 · 주기 ·
+ * 좌표계가 바뀌는 지점. 그래서 "무엇이 흐르는가"보다 **"경계에서 무엇이 바뀌거나 사라지는가"**
+ * 를 필수 항목으로 둔다.
+ */
+export const interfaceEdgeSchema = z.object({
+  from: z.string().min(1).max(24),
+  to: z.string().min(1).max(24),
+  /** 흐르는 값. */
+  payload: nonEmpty,
+  /** 주기 · 타이밍. 이산화가 결과를 바꾸는 경계에만 적는다. */
+  rate: nonEmpty.optional(),
+  /** 이 경계에서 바뀌거나 사라지는 것. 비워 둘 수 없다. */
+  boundary: nonEmpty,
+});
+
+/** 닫힌 루프의 한 걸음. */
+export const loopStepSchema = z.object({
+  label: z.string().min(1).max(24),
+  note: nonEmpty.optional(),
+});
+
+/**
+ * 케이스에 덧붙이는 보조 다이어그램.
+ *
+ * 아키텍처 구성도가 "무엇이 있는가"를 그린다면, 이쪽은 **연결 관계 자체**를 그린다.
+ * - `interfaces` — 경계별로 흐르는 값과 그 경계에서 바뀌는 것
+ * - `loop` — 되돌아오는 경로가 있는 닫힌 루프(결함이 도는 경로 · 제어 루프)
+ */
+export const caseDiagramSchema = z.discriminatedUnion("kind", [
+  z.object({
+    kind: z.literal("interfaces"),
+    title: nonEmpty,
+    caption: nonEmpty,
+    edges: z.array(interfaceEdgeSchema).min(2).max(6),
+  }),
+  z.object({
+    kind: z.literal("loop"),
+    title: nonEmpty,
+    caption: nonEmpty,
+    steps: z.array(loopStepSchema).min(3).max(6),
+    /** 마지막 걸음이 첫 걸음으로 돌아가는 경로의 설명. */
+    returnLabel: nonEmpty,
+  }),
+]);
+
+/**
+ * 계측값 1건.
+ *
+ * `value` 는 화면에서 가장 큰 글자가 되므로 짧은 토큰이어야 한다.
+ * 근거 없는 값을 쓰지 않는다 — 수치는 전부 실제로 잰 결과다.
+ */
+export const metricSchema = z.object({
+  value: z.string().min(1).max(16),
+  label: nonEmpty,
+  note: nonEmpty.optional(),
+});
+
 /** 프로젝트 케이스 스터디. 가이드 §9 의 5단 구조를 강제한다. */
 export const projectSchema = z.object({
   slug: slugSchema,
@@ -104,11 +201,31 @@ export const projectSchema = z.object({
    * 검증되지 않은 실적 주장이 실수로 배포되는 것을 막는 안전장치다.
    */
   isPublished: z.boolean(),
-  problem: nonEmpty,
-  environment: nonEmpty,
-  simulation: nonEmpty,
-  verification: nonEmpty,
-  result: nonEmpty,
+  /** 케이스 스터디 상단에 놓이는 시뮬레이션 구성도. 사진 대신 이것을 보여준다. */
+  architecture: architectureSchema,
+  /**
+   * 연결 관계를 설명하는 보조 다이어그램. 필요한 만큼만 둔다(최대 3).
+   * 없으면 빈 배열을 명시한다 — 생략을 기본값으로 두면 "설명할 연결이 없다"와
+   * "아직 안 적었다"가 구분되지 않는다.
+   */
+  diagrams: z.array(caseDiagramSchema).max(3),
+  /** 계측 요약. 본문을 읽지 않아도 "무엇을 쟀는지"가 먼저 보이게 한다. */
+  metrics: z.array(metricSchema).min(3).max(6),
+  /**
+   * 5단 본문. 각 항목은 **문단 배열**이다.
+   * 한 문단에 여러 주장을 밀어넣는 대신 문단을 나눠 읽는 속도를 유지한다.
+   * 문장 안의 `**강조**` 는 `RichText` 가 해석한다(src/lib/richText.ts).
+   */
+  problem: z.array(nonEmpty).min(1),
+  environment: z.array(nonEmpty).min(1),
+  simulation: z.array(nonEmpty).min(1),
+  verification: z.array(nonEmpty).min(1),
+  result: z.array(nonEmpty).min(1),
+  /** 이 프로젝트가 남긴 설계 판단. 실적 자랑이 아니라 다음 프로젝트에 쓰는 원칙이다. */
+  lessons: z
+    .array(z.object({ title: nonEmpty, body: nonEmpty }))
+    .min(2)
+    .max(5),
   mediaSlot: nonEmpty,
 });
 
@@ -215,6 +332,10 @@ export type Credit = z.infer<typeof creditSchema>;
 export type MediaManifest = z.infer<typeof mediaManifestSchema>;
 export type Service = z.infer<typeof serviceSchema>;
 export type Project = z.infer<typeof projectSchema>;
+export type Architecture = z.infer<typeof architectureSchema>;
+export type ArchitectureColumn = z.infer<typeof architectureColumnSchema>;
+export type CaseDiagram = z.infer<typeof caseDiagramSchema>;
+export type Metric = z.infer<typeof metricSchema>;
 export type TechnologyGroup = z.infer<typeof technologyGroupSchema>;
 export type CapabilityGroup = z.infer<typeof capabilityGroupSchema>;
 export type Site = z.infer<typeof siteSchema>;
