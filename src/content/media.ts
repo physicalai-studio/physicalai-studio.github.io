@@ -154,13 +154,25 @@ export const mediaManifest = mediaManifestSchema.parse({
     alt: "충돌 형상이 겹쳐 표시된 로봇팔이 작업대 위 물체를 파지하는 시뮬레이션 테스트베드",
     clearance: "self-produced",
   },
-  "project-machine-tending": {
-    kind: "placeholder",
-    intent: "좁은 표적 통과 작업 — 공구 자세와 접근 경로가 보이는 컷",
+  /**
+   * 자세 표현이 자유도를 잃는 지점을 형태로 옮긴 장.
+   * 생성: `scripts/gen-fields.py build_orientation_field()` (비주얼 컨셉 §4 `VORTEX`)
+   */
+  "project-orientation": {
+    kind: "image",
+    src: "/media/orientation-field.webp",
+    alt: "중심의 위상 특이점과 꺼진 부채꼴 구간을 가진 초록빛 나선 파면",
+    clearance: "self-produced",
   },
+  /**
+   * 두 관측이 하나로 합쳐질 때 남는 이음매를 형태로 옮긴 장.
+   * 생성: `scripts/gen-fields.py build_navigation_field()` (비주얼 컨셉 §4 `SEAM`)
+   */
   "project-navigation": {
-    kind: "placeholder",
-    intent: "다중 LiDAR 병합 결과 — 두 스캔이 하나로 합쳐진 점군 화면",
+    kind: "image",
+    src: "/media/navigation-field.webp",
+    alt: "두 파원의 파면이 최단거리 경계를 따라 이어 붙은 초록빛 장",
+    clearance: "self-produced",
   },
   /**
    * 심 머신(컨트롤러 펌웨어)의 형이상학을 형태로 옮긴 장.

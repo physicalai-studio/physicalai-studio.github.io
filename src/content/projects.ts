@@ -1,4 +1,3 @@
-import { caseTextureSlot } from "./media";
 import { projectSchema, type Project } from "./schema";
 
 /**
@@ -698,8 +697,7 @@ const projects: Project[] = [
         body: "해가 없는 구간을 지도로 만들어 두면 같은 작업을 다시 계획할 때 재현되지 않습니다. **재현되지 않게 만드는 것이 수리**입니다.",
       },
     ],
-    // 실제 캡처 미확보 — 목록 카드에는 추상 텍스처를 쓴다(debt-008)
-    mediaSlot: caseTextureSlot("precision-orientation-control"),
+    mediaSlot: "project-orientation",
   },
   {
     slug: "whole-body-collision-validation",
@@ -1016,8 +1014,7 @@ const projects: Project[] = [
         body: "운용 설계 범위를 문서에만 적으면 지켜지지 않습니다. 패키지 경계로 만들어 두면 **범위를 벗어나는 요청이 구조적으로 걸립니다.**",
       },
     ],
-    // 실제 캡처 미확보 — 목록 카드에는 추상 텍스처를 쓴다(debt-008)
-    mediaSlot: caseTextureSlot("amr-navigation-stack"),
+    mediaSlot: "project-navigation",
   },
 ].map((project) => projectSchema.parse(project));
 

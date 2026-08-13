@@ -345,6 +345,83 @@ def build_sim_machine_field() -> np.ndarray:
     return np.clip(np.clip(field, 0.0, 1.0) ** 1.05 * 0.90, 0.0, 1.0)
 
 
+def build_orientation_field() -> np.ndarray:
+    """`VORTEX` — 위상 특이점과 해가 사라지는 띠.
+
+    **형이상학적 분석** — 이 케이스에서 자유도를 잃은 것은 로봇이 아니라 **표현**이었다.
+    수평 자세에서 오일러 각은 한 축을 잃는다(짐벌락). 로봇은 멀쩡한데 그 자세를 적는
+    방식이 무너진 것이다. 그리고 어떤 방위 구간에서는 관절해가 아예 존재하지 않는다.
+
+    파동에는 같은 것이 이미 있다 — **위상 특이점**이다. 나선 파면의 중심에서는 위상이
+    정의되지 않고, 그래서 진폭이 0 이 된다. 없는 것은 빛이 아니라 **위상을 적을 방법**이다.
+
+    | 요소                     | 뜻                                                   |
+    | ------------------------ | ---------------------------------------------------- |
+    | 나선 파면                | 시선축은 고정한 채 방위만 도는 명령                  |
+    | 중심의 진폭 0            | 짐벌락 — 표현이 정의되지 않는 자세                   |
+    | 꺼져 있는 부채꼴 한 구간 | 관절해가 존재하지 않는 dead-band                     |
+
+    쓰는 곳: 자세 제어 케이스 스터디의 대표 이미지.
+    """
+    x, y = grid(0.52, 0.46, squash=1.0)
+    radius = np.sqrt(x**2 + y**2) + 1e-3
+    angle = np.arctan2(y, x)
+
+    # 나선 — 방위와 반경이 함께 위상을 만든다. 위수 3 이면 팔이 셋이다.
+    topological_charge = 3.0
+    phase = topological_charge * angle + radius * 17.0
+    field = (0.5 + 0.5 * np.cos(phase)) ** 2.2
+
+    # **위상 특이점** — 중심에서 위상이 정의되지 않으므로 진폭이 0 이다.
+    field *= 1.0 - np.exp(-((radius / 0.19) ** 2))
+
+    # **해가 사라지는 띠** — 특정 방위 구간만 꺼진다. 나머지가 멀쩡한 것이 요점이다.
+    dead_band = np.arctan2(np.sin(angle - np.deg2rad(28)), np.cos(angle - np.deg2rad(28)))
+    field *= 1.0 - 0.96 * np.exp(-((dead_band / 0.26) ** 2))
+
+    field *= np.exp(-((radius / 1.22) ** 2.0))
+    return np.clip(np.clip(field, 0.0, 1.0) ** 1.10 * 0.90, 0.0, 1.0)
+
+
+def build_navigation_field() -> np.ndarray:
+    """`SEAM` — 두 관측이 하나로 이어 붙은 자국.
+
+    **형이상학적 분석** — 대각으로 놓인 두 스캐너를 "하나의 스캔처럼" 다루면, 방향마다
+    **더 가까운 쪽만 남고 뒤는 사라진다.** 합쳐진 세계는 두 관측의 합이 아니라 그보다 얇다.
+    그 얇아진 자리가 이 형태의 주제다.
+
+    | 요소                       | 뜻                                            |
+    | -------------------------- | --------------------------------------------- |
+    | 두 파원 · 대각 배치        | 사각을 없애려 어긋나게 단 두 스캐너           |
+    | **더 가까운 파면만 채택**  | 각도 빈별 최단거리 — 병합 규칙 그 자체        |
+    | 두 영역이 만나는 이음매    | 규칙이 바뀌는 선. 매끈하지 않은 것이 사실이다 |
+    | 버려진 파면의 희미한 잔상  | 사라진 뒤쪽 점 — 손실을 지우지 않고 남긴다    |
+
+    쓰는 곳: 주행 스택 케이스 스터디의 대표 이미지.
+    """
+    x, y = grid(0.50, 0.46, squash=1.0)
+
+    front = np.sqrt((x + 0.52) ** 2 + (y + 0.28) ** 2) + 1e-3
+    rear = np.sqrt((x - 0.52) ** 2 + (y - 0.28) ** 2) + 1e-3
+
+    wavenumber = 19.0
+    nearer = np.minimum(front, rear)
+    farther = np.maximum(front, rear)
+
+    kept = (0.5 + 0.5 * np.cos(nearer * wavenumber)) ** 2.8
+    # 버린 쪽을 완전히 지우지 않는다 — 무엇이 사라졌는지 보이게 남긴다.
+    discarded = (0.5 + 0.5 * np.cos(farther * wavenumber)) ** 2.8
+
+    field = kept + discarded * 0.13
+
+    # 두 관측점 자리는 비운다 — 센서는 자기 위치를 보지 못한다.
+    field *= 1.0 - np.exp(-((front / 0.12) ** 2))
+    field *= 1.0 - np.exp(-((rear / 0.12) ** 2))
+
+    field *= np.exp(-((nearer / 1.05) ** 1.9))
+    return np.clip(np.clip(field, 0.0, 1.0) ** 1.15 * 0.84, 0.0, 1.0)
+
+
 def apply_ramp(field: np.ndarray) -> np.ndarray:
     """스칼라 밝기장을 초록 램프 색으로 매핑한다."""
     positions = np.array([stop for stop, _ in RAMP], dtype=np.float32)
@@ -385,6 +462,8 @@ def main() -> None:
     render("projects-field", build_projects_field())
     render("technology-field", build_technology_field())
     render("sim-machine-field", build_sim_machine_field())
+    render("orientation-field", build_orientation_field())
+    render("navigation-field", build_navigation_field())
 
     # 파비콘 — Next.js App Router 가 src/app/icon.png 를 자동으로 <link rel="icon"> 으로 만든다.
     app_dir = ROOT / "src" / "app"
