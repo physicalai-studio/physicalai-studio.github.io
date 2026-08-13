@@ -7,8 +7,8 @@
 생성물:
   home-hero-field.webp     겹친 고리 — 토로이달 발광체 (RING)
   home-contact-field.webp  두 파동원의 간섭 무늬 — 쌍곡선 프린지 (FRINGE)
-  about-field.webp         일자 수평파 (PLANE) — About 페이지 배경
-  contact-page-field.webp  V 파 · 뱃머리파 (BOW) — Contact 페이지 배경
+  about-field.webp         RING 의 수평 변주 — About 페이지 배경
+  contact-page-field.webp  V 파 · 뱃머리파 (BOW, 오른쪽 방향) — Contact 페이지 배경
   services-field.webp      정상파의 마디 (NODE) — Services 페이지 배경
   projects-field.webp      확정된 코어 (RING) — Projects 페이지 배경
   technology-field.webp    중심이 보이는 파면 (WAVEFRONT) — Technology 페이지 배경
@@ -169,46 +169,56 @@ def render_icon(path: pathlib.Path, size: int) -> None:
 
 
 def build_about_field() -> np.ndarray:
-    """일자 수평파. 파원이 무한히 먼 **평면파**다.
+    """히어로의 `RING` 을 **가로로 늘인 것**. 같은 형태의 축척 변주다.
 
-    뜻(컨셉 §2): 파면 — 다만 곡률이 사라진 상태. 방향이 하나로 정해져 흔들리지 않는다.
-    About 은 원칙을 말하는 자리이므로, 퍼져 나가는 파문보다 **가지런한 결**이 맞다.
+    뜻(컨셉 §2): 가능성의 장 — 히어로와 같다. 사이트 첫 화면과 About 이 같은 말을 하되,
+    About 은 페이지 전체 배경이므로 세로를 눌러 **수평으로 흐르게** 만든다.
 
-    구현: `cos(k·y)` 로 수평 띠를 만들고, 아주 약한 기울기를 줘 완전한 평행을 피한다.
-    수학적으로 완벽한 평행선은 인쇄물 무늬처럼 보인다.
+    새 형태가 아니다(컨셉 §4 — 파원 구성이 같다). 좌표계의 세로를 크게 곱하면
+    원이 가로로 긴 타원이 되고, 고리의 호가 수평 띠처럼 읽힌다.
     """
-    x, y = grid(0.55, 0.50, squash=1.0)
+    # squash 를 크게 줄수록 원이 가로로 납작해진다.
+    x, y = grid(0.60, 0.50, squash=3.6)
 
-    # 아주 약한 기울기 — 완전 수평이면 벽지가 된다.
-    phase = y * 13.0 + x * 0.9
-    bands = (0.5 + 0.5 * np.cos(phase)) ** 3.4
+    outer = ring(x, y, radius=0.72, width=0.185)
+    outer *= angular_weight(x, y, peak_deg=200, spread=0.55)
 
-    # 오른쪽으로 갈수록 또렷해진다. 왼쪽은 카피 자리라 비운다.
-    lateral = np.clip((x + 0.55) / 1.25, 0.0, 1.0) ** 1.6
-    vertical = np.exp(-((y / 1.15) ** 2.6))
+    inner_y = y - 0.30
+    inner = ring(x, inner_y, radius=0.34, width=0.135)
+    inner *= angular_weight(x, inner_y, peak_deg=115, spread=0.50)
 
-    field = bands * lateral * vertical
-    return np.clip(np.clip(field, 0.0, 1.0) ** 1.25 * 0.80, 0.0, 1.0)
+    halo = np.exp(-((np.sqrt(x**2 + y**2) / 1.00) ** 2)) * 0.24
+
+    field = outer * 0.92 + inner * 0.78 + halo
+
+    # 가장자리는 검정으로 — 왼쪽 카피 자리가 살아야 한다.
+    vignette = np.exp(-((np.sqrt((x / 1.45) ** 2 + (y / 2.60) ** 2)) ** 2.6))
+    field *= vignette
+
+    return np.clip(np.clip(field, 0.0, 1.0) ** 1.35 * 0.80, 0.0, 1.0)
 
 
 def build_contact_page_field() -> np.ndarray:
-    """V 파(뱃머리파). 움직이는 파원이 뒤로 남기는 쐐기 모양 파면.
+    """V 파(뱃머리파). 움직이는 파원이 뒤로 남기는 쐐기.
 
     뜻(컨셉 §2): 파면 — **시작점이 있고 거기서부터 퍼진다.**
     "START A PROJECT" 는 무언가가 출발하는 자리이므로 이 형태를 쓴다.
 
-    구현: 꼭짓점에서 `|y|` 와 `x` 의 선형 결합을 위상으로 삼으면 V 자 파면이 나온다.
-    꼭짓점 앞쪽(파원이 아직 지나지 않은 영역)은 비운다.
+    방향: 꼭짓점을 **오른쪽**에 두고 쐐기가 왼쪽으로 열린다 — 화살표가 오른쪽(전진)을 가리킨다.
+    구현: 꼭짓점 기준으로 `|y| − (꼭짓점까지의 거리)·기울기` 를 위상으로 삼는다.
+    꼭짓점 **바깥쪽**(파원이 아직 지나지 않은 영역)은 비운다.
     """
-    x, y = grid(0.30, 0.52, squash=1.0)
+    x, y = grid(0.88, 0.52, squash=1.0)
 
-    # 쐐기 각도 — 값이 작을수록 V 가 벌어진다.
+    # 꼭짓점 왼쪽이 양수가 되도록 뒤집는다 — 이 부호가 화살표 방향을 정한다.
+    behind = -x
+
     slope = 0.62
-    phase = (np.abs(y) - x * slope) * 15.0
+    phase = (np.abs(y) - behind * slope) * 15.0
     wedge = (0.5 + 0.5 * np.cos(phase)) ** 3.0
 
     # 쐐기 안쪽만 남긴다 — 꼭짓점 앞은 파면이 아직 도달하지 않은 자리다.
-    inside = np.clip((x * slope - np.abs(y) + 0.30) / 0.35, 0.0, 1.0)
+    inside = np.clip((behind * slope - np.abs(y) + 0.30) / 0.35, 0.0, 1.0)
 
     decay = np.exp(-((np.sqrt(x**2 + y**2) / 1.55) ** 2.0))
 

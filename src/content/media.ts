@@ -32,14 +32,14 @@ export const mediaManifest = mediaManifestSchema.parse({
   "about-backdrop": {
     kind: "image",
     src: "/media/about-field.webp",
-    alt: "완만하게 기운 초록빛 수평 파동 띠",
+    alt: "가로로 길게 늘어난 초록빛 고리 형태의 광장(光場)",
     clearance: "self-produced",
   },
   // Contact 페이지 전체 배경 — 홈 CTA 와 같은 간섭 무늬를 넓고 조용하게.
   "contact-backdrop": {
     kind: "image",
     src: "/media/contact-page-field.webp",
-    alt: "왼쪽 꼭짓점에서 퍼져 나가는 초록빛 V 자 파면",
+    alt: "오른쪽을 가리키는 초록빛 V 자 파면",
     clearance: "self-produced",
   },
   // 본문 페이지 전체 배경 3종 — About·Contact 보다 밝고 파동의 중심이 화면 안에 있다.
