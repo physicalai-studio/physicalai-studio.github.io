@@ -7,6 +7,8 @@
 생성물:
   home-hero-field.webp     겹친 고리 — 토로이달 발광체
   home-contact-field.webp  두 파동원의 간섭 무늬 — 쌍곡선 프린지
+  src/app/icon.png         파비콘 — 히어로와 같은 RING 형태를 작은 크기용으로 다시 그린 것
+  src/app/apple-icon.png   iOS 홈 화면 아이콘 (같은 그림, 180px)
 
 두 이미지는 같은 초록 램프·그레인 처리를 공유하고 **형상만 다르다**.
 
@@ -18,6 +20,7 @@
     python3 scripts/gen-fields.py
 """
 
+import pathlib
 from pathlib import Path
 
 import numpy as np
@@ -115,6 +118,51 @@ def build_contact_field() -> np.ndarray:
     return np.clip(np.clip(field, 0.0, 1.0) ** 1.35 * 0.88, 0.0, 1.0)
 
 
+def build_icon_field(size: int) -> np.ndarray:
+    """겹친 고리 — 아이콘용. 비주얼 컨셉 §4 의 `RING` 을 작은 크기에 맞게 다시 그린 것이다.
+
+    새 형태가 아니라 **같은 형태의 다른 축척**이다. 16px 에서는 히어로의 부드러운 광채가
+    회색 얼룩으로 뭉개지므로, 블러를 줄이고 고리를 두껍게 하고 대비를 세게 잡는다.
+    그레인도 넣지 않는다 — 작은 크기에서는 노이즈로만 보인다.
+    """
+    yy, xx = np.mgrid[0:size, 0:size].astype(np.float32)
+    scale = size * 0.5
+    x = (xx - size * 0.5) / scale
+    y = (yy - size * 0.5) / scale
+
+    # 바깥 고리 — 아이콘의 뼈대. 히어로보다 두껍게.
+    outer = ring(x, y, radius=0.62, width=0.230)
+    outer *= angular_weight(x, y, peak_deg=215, spread=0.45)
+
+    # 안쪽 고리 — 히어로 형태를 알아보게 하는 특징. 위치를 살짝 내린다.
+    inner_y = y - 0.24
+    inner = ring(x, inner_y, radius=0.27, width=0.150)
+    inner *= angular_weight(x, inner_y, peak_deg=110, spread=0.40)
+
+    field = np.maximum(outer * 1.00, inner * 0.92)
+
+    # 가장자리를 눌러 원형 실루엣을 만든다 — 사각형 배경이 드러나지 않게.
+    vignette = np.exp(-((np.sqrt(x**2 + y**2) / 1.02) ** 4))
+    field *= vignette
+
+    return np.clip(np.clip(field, 0.0, 1.0) ** 0.85, 0.0, 1.0)
+
+
+def render_icon(path: pathlib.Path, size: int) -> None:
+    """아이콘 저장. 블러는 크기에 비례해 아주 약하게만 준다."""
+    field = build_icon_field(size)
+
+    blurred = Image.fromarray((field * 255).astype(np.uint8), mode="L")
+    blurred = blurred.filter(ImageFilter.GaussianBlur(radius=max(1, size // 180)))
+    field = np.asarray(blurred, dtype=np.float32) / 255.0
+
+    rgb = apply_ramp(field)
+    image = Image.fromarray(np.clip(rgb, 0, 255).astype(np.uint8), mode="RGB")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    image.save(path, "PNG")
+    print(f"{path.name:26s} {size}x{size}  {path.stat().st_size / 1024:.1f} KB")
+
+
 def apply_ramp(field: np.ndarray) -> np.ndarray:
     """스칼라 밝기장을 초록 램프 색으로 매핑한다."""
     positions = np.array([stop for stop, _ in RAMP], dtype=np.float32)
@@ -149,6 +197,11 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     render("home-hero-field", build_hero_field())
     render("home-contact-field", build_contact_field())
+
+    # 파비콘 — Next.js App Router 가 src/app/icon.png 를 자동으로 <link rel="icon"> 으로 만든다.
+    app_dir = ROOT / "src" / "app"
+    render_icon(app_dir / "icon.png", 256)
+    render_icon(app_dir / "apple-icon.png", 180)
 
 
 if __name__ == "__main__":
