@@ -15,7 +15,8 @@ export const site = siteSchema.parse({
   // 배포 시 NEXT_PUBLIC_SITE_URL 로 주입한다. 미설정이면 해석되지 않는 예약 도메인을 쓴다
   // — 실제 도메인 오기입 상태로 색인되는 사고를 막기 위함이다(debt-005).
   baseUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.invalid",
-  contactEmail: "contact@example.invalid",
+  contactEmail: "selele@nate.com",
+  contactPhone: "+82 10-7475-2889",
   nav: [
     { label: "SERVICES", href: "/services" },
     { label: "PROJECTS", href: "/projects" },

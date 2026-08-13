@@ -152,6 +152,8 @@ export const siteSchema = z.object({
   /** 도메인 미확정. 배포 직전 실제 도메인으로 교체한다 (D1). */
   baseUrl: z.url(),
   contactEmail: z.email(),
+  /** 표시용 전화번호. `tel:` 링크는 숫자만 남겨 별도로 만든다. */
+  contactPhone: nonEmpty,
   nav: z.array(navItemSchema).min(1),
   cta: z.object({
     primary: navItemSchema,
@@ -164,6 +166,7 @@ export const companySchema = z.object({
   philosophyBody: nonEmpty,
   principles: z.array(z.object({ title: nonEmpty, body: nonEmpty })).min(1),
   founder: z.object({
+    name: nonEmpty,
     role: nonEmpty,
     summary: nonEmpty,
   }),

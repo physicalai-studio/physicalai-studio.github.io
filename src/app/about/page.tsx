@@ -45,7 +45,7 @@ export default function AboutPage() {
         </Section>
 
         <Section bordered wide>
-          <SectionHeading eyebrow={company.founder.role} title="Founder" />
+          <SectionHeading eyebrow={company.founder.role} title={company.founder.name} />
           <p className="mt-8 max-w-2xl leading-relaxed text-muted">{company.founder.summary}</p>
         </Section>
       </div>

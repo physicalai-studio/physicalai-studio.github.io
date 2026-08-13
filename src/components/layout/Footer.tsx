@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/common/Container";
 import { site } from "@/content/site";
+import { telHref } from "@/lib/contact";
 
 export function Footer() {
   return (
@@ -28,8 +29,11 @@ export function Footer() {
             <p className="font-mono text-(length:--text-eyebrow) tracking-[0.3em] text-faint uppercase">
               contact
             </p>
-            <a href={`mailto:${site.contactEmail}`} className="mt-3 inline-block hover:underline">
+            <a href={`mailto:${site.contactEmail}`} className="mt-3 block hover:underline">
               {site.contactEmail}
+            </a>
+            <a href={telHref()} className="mt-1 block hover:underline">
+              {site.contactPhone}
             </a>
           </div>
         </div>

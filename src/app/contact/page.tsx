@@ -2,6 +2,7 @@ import { PageBackdrop } from "@/components/section/PageBackdrop";
 import { Section } from "@/components/section/Section";
 import { SectionHeading } from "@/components/section/SectionHeading";
 import { site } from "@/content/site";
+import { telHref } from "@/lib/contact";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
@@ -29,16 +30,29 @@ export default function ContactPage() {
             로봇이 무엇을 해야 하는지 알려주세요. 검토 가능한 범위와 접근 방향을 회신드립니다.
           </p>
 
-          <div className="mt-16 border-t border-line pt-8">
-            <p className="font-mono text-(length:--text-eyebrow) tracking-[0.3em] text-faint uppercase">
-              email
-            </p>
-            <a
-              href={`mailto:${site.contactEmail}`}
-              className="mt-4 inline-block text-(length:--text-title) tracking-tight transition-colors hover:text-accent"
-            >
-              {site.contactEmail}
-            </a>
+          <div className="mt-16 grid gap-10 border-t border-line pt-8 sm:grid-cols-2">
+            <div>
+              <p className="font-mono text-(length:--text-eyebrow) tracking-[0.3em] text-faint uppercase">
+                email
+              </p>
+              <a
+                href={`mailto:${site.contactEmail}`}
+                className="mt-4 inline-block text-(length:--text-title) tracking-tight transition-colors hover:text-accent"
+              >
+                {site.contactEmail}
+              </a>
+            </div>
+            <div>
+              <p className="font-mono text-(length:--text-eyebrow) tracking-[0.3em] text-faint uppercase">
+                phone
+              </p>
+              <a
+                href={telHref()}
+                className="mt-4 inline-block text-(length:--text-title) tracking-tight transition-colors hover:text-accent"
+              >
+                {site.contactPhone}
+              </a>
+            </div>
           </div>
 
           <SectionHeading

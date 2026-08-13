@@ -27,6 +27,7 @@ export const company = companySchema.parse({
     },
   ],
   founder: {
+    name: "이다빈",
     role: "Founder / Principal Engineer",
     summary:
       "산업용 6축 로봇암, 토크 제어 양팔 매니퓰레이터, 모바일 매니퓰레이터, 차동 구동 AMR, 휴머노이드를 시뮬레이션과 실기 양쪽에서 다뤄 왔습니다. CAD 자산을 시뮬레이션 모델로 만드는 일부터 특이 자세 진단, 중력 보상과 컴플라이언스, 다중 LiDAR 융합과 주행 스택, 엣지 인지 파이프라인까지 — 로봇이 실제로 움직이지 않을 때 원인을 짚어내는 일을 해 왔습니다.",
