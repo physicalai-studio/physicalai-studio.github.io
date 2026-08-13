@@ -57,7 +57,7 @@ export const home = homeSchema.parse({
     eyebrow: "06 — Why Simulation First",
     title: "Engineering Before Assumption.",
     body: "가상환경에서 발견한 문제는 수정 비용이 거의 들지 않습니다. 실물에서 발견하면 그렇지 않습니다. 그래서 결론과 함께 그 결론의 신뢰 등급을 드립니다.",
-    mediaSlot: "service-feasibility",
+    mediaSlot: "home-why",
   },
 
   contact: {

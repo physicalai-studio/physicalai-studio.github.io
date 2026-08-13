@@ -56,3 +56,8 @@ tsconfig.tsbuildinfo
 # 제3자 참조 이미지 — 저작권 때문에 커밋하지 않는다
 image/reference/*
 !image/reference/README.md
+
+# 익명화 전 현장 사진 — 원본에 기관 표식이 찍혀 있어 커밋하지 않는다.
+# 배포본(public/media/facility-overhead.webp)은 그 표식을 잘라낸 크롭이며,
+# 크롭 좌표는 scripts/build-media.py 의 JOBS 에 있다(image/ATTRIBUTION.md 참조).
+image/KakaoTalk_*.jpg

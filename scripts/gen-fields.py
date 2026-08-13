@@ -300,6 +300,51 @@ def build_technology_field() -> np.ndarray:
     return np.clip(np.clip(field, 0.0, 1.0) ** 1.18 * 0.88, 0.0, 1.0)
 
 
+def build_sim_machine_field() -> np.ndarray:
+    """`PHANTOM SOURCE` — 파면은 완전한데 파원의 자리가 비어 있고, 그것이 둘이다.
+
+    **형이상학적 분석** — '심 머신'은 몸 없는 컨트롤러다. 실기체의 펌웨어가 로봇 없이 돌아가고,
+    그 결과는 실기와 같은 법칙을 따른다. 즉 **원인의 자리는 비었는데 결과의 장은 온전하다.**
+    게다가 그것은 하나가 아니라 둘이다 — 가상 컨트롤러와 실기 컨트롤러. 둘은 근사가 아니라
+    같은 법칙이므로, 만들어 내는 파면도 같다. **어느 쪽이 원본인지 장을 보고는 알 수 없다.**
+
+    그래서 형태를 이렇게 정했다:
+
+    | 요소                    | 뜻                                                     |
+    | ----------------------- | ------------------------------------------------------ |
+    | 같은 파수 · 같은 위상   | 두 컨트롤러가 같은 법칙을 쓴다                         |
+    | 두 파원 자리의 **공백** | 몸이 없다 — 결과만 있고 원인의 실체가 없다             |
+    | 두 장의 겹침(간섭)      | 검증이란 두 장이 겹치는 자리를 재는 일이다             |
+    | 좌우 대칭축             | 원본과 사본을 구분할 수 없는 선 — 이 구조가 노리는 상태 |
+
+    비주얼 컨셉 §4 의 파원 구성 어휘에 `PHANTOM SOURCE` 로 추가했다.
+    """
+    x, y = grid(0.50, 0.46, squash=1.0)
+
+    separation = 0.44
+    left = np.sqrt((x + separation) ** 2 + y**2) + 1e-3
+    right = np.sqrt((x - separation) ** 2 + y**2) + 1e-3
+
+    # 진폭을 더한 뒤 제곱한다 — 세기를 더하는 것과 다르다.
+    # 이렇게 해야 두 파원이 **간섭**하고, 마디와 배가 실제 위치에 생긴다.
+    # 거리에 따른 감쇠(1/√r)까지 넣어야 파면이 멀리서 균일하게 밝아지지 않는다.
+    wavenumber = 25.0
+    amplitude = np.cos(left * wavenumber) / np.sqrt(left) + np.cos(right * wavenumber) / np.sqrt(
+        right
+    )
+    field = (amplitude * 0.42) ** 2
+
+    # **파원의 공백** — 이 그림의 핵심. 보통은 중심을 발광시키지만 여기서는 도려낸다.
+    hollow = 0.22
+    field *= 1.0 - np.exp(-((left / hollow) ** 2.6))
+    field *= 1.0 - np.exp(-((right / hollow) ** 2.6))
+
+    # 두 파원의 중점에서 멀어질수록 옅어진다.
+    field *= np.exp(-((np.sqrt(x**2 + y**2) / 1.30) ** 2.0))
+
+    return np.clip(np.clip(field, 0.0, 1.0) ** 1.05 * 0.90, 0.0, 1.0)
+
+
 def apply_ramp(field: np.ndarray) -> np.ndarray:
     """스칼라 밝기장을 초록 램프 색으로 매핑한다."""
     positions = np.array([stop for stop, _ in RAMP], dtype=np.float32)
@@ -339,6 +384,7 @@ def main() -> None:
     render("services-field", build_services_field())
     render("projects-field", build_projects_field())
     render("technology-field", build_technology_field())
+    render("sim-machine-field", build_sim_machine_field())
 
     # 파비콘 — Next.js App Router 가 src/app/icon.png 를 자동으로 <link rel="icon"> 으로 만든다.
     app_dir = ROOT / "src" / "app"

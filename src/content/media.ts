@@ -151,7 +151,7 @@ export const mediaManifest = mediaManifestSchema.parse({
   "service-physical-ai": {
     kind: "image",
     src: "/media/physical-ai.webp",
-    alt: "테스트 리그에 장착된 휴머노이드 하체의 물리 검증 환경",
+    alt: "충돌 형상이 겹쳐 표시된 로봇팔이 작업대 위 물체를 파지하는 시뮬레이션 테스트베드",
     clearance: "self-produced",
   },
   "project-machine-tending": {
@@ -161,6 +161,29 @@ export const mediaManifest = mediaManifestSchema.parse({
   "project-navigation": {
     kind: "placeholder",
     intent: "다중 LiDAR 병합 결과 — 두 스캔이 하나로 합쳐진 점군 화면",
+  },
+  /**
+   * 심 머신(컨트롤러 펌웨어)의 형이상학을 형태로 옮긴 장.
+   * 파면은 온전한데 두 파원의 자리가 비어 있다 — 몸 없는 컨트롤러가 둘.
+   * 생성: `scripts/gen-fields.py build_sim_machine_field()` (비주얼 컨셉 §4 `PHANTOM SOURCE`)
+   */
+  "project-sim-machine": {
+    kind: "image",
+    src: "/media/sim-machine-field.webp",
+    alt: "두 파원의 자리가 비어 있는 초록빛 간섭 파면",
+    clearance: "self-produced",
+  },
+  "home-why": {
+    kind: "image",
+    src: "/media/facility-overhead.webp",
+    alt: "천장 반송 레일과 조명이 격자를 이루는 자동화 설비 내부",
+    clearance: "anonymized",
+  },
+  "project-drive-alignment": {
+    kind: "image",
+    src: "/media/drive-alignment.webp",
+    alt: "이동 베이스의 구동 휠과 캐스터, 회전 관절 축이 표시된 시뮬레이션 클로즈업",
+    clearance: "self-produced",
   },
   "project-amr-manipulator": {
     kind: "image",
