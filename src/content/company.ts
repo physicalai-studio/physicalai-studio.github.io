@@ -7,7 +7,7 @@ import { companySchema } from "./schema";
 export const company = companySchema.parse({
   philosophy: "ENGINEERING BEFORE ASSUMPTION.",
   philosophyBody:
-    "필요한 가상 에셋을 빠르게 세웁니다 — 로봇 · 설비 · 환경 모델, 그것이 물리로 돌아가는 테스트베드, 제어와 인지가 곧바로 붙는 인터페이스. 시뮬레이션에서 출발해 개발 내내 돌아가고 실기 배포에서 닫히는 한 줄입니다. 검증이 개발의 앞뒤에 붙는 단계가 아니라, 처음부터 끝까지 이어지도록.",
+    "고객은 로봇을 가져오고, 지능을 가져옵니다. 우리는 그 둘이 실패해도 아무것도 부서지지 않는 세계를 먼저 만듭니다 — 로봇 · 설비 · 환경 모델과 그것이 물리로 돌아가는 테스트베드, 제어와 인지가 곧바로 붙는 인터페이스까지. 그 세계를 수백 번 통과하고도 남은 것만 현실의 문을 열고 나갑니다.",
   /*
     HOW WE WORK 는 업무 프로세스가 아니라 **현실에 접근하는 방법론**이다(docs/how_we_work.md).
 

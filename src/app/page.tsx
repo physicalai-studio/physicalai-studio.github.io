@@ -4,9 +4,11 @@ import { Container } from "@/components/common/Container";
 import { Reveal } from "@/components/common/Reveal";
 import { MediaSlot } from "@/components/media/MediaSlot";
 import { GateList } from "@/components/section/GateList";
+import { CustomerTable } from "@/components/section/CustomerTable";
 import { Section } from "@/components/section/Section";
 import { SectionHeading } from "@/components/section/SectionHeading";
 import { company } from "@/content/company";
+import { customerSegments } from "@/content/customers";
 import { home } from "@/content/home";
 import { getVisibleProjects } from "@/content/projects";
 import { services } from "@/content/services";
@@ -27,6 +29,7 @@ export default function HomePage() {
     <>
       <HeroSection />
       <ProblemsSection />
+      <CustomersSection />
       <ServicesSection />
       <HowWeWorkSection />
       {projects.length > 0 ? <ProjectsSection /> : null}
@@ -111,6 +114,25 @@ function ProblemsSection() {
 }
 
 /** 02 — 서비스는 결과 중심으로 한 줄씩. 상세는 /services 가 맡는다. */
+/**
+ * 02 — 자격 판정. 문제 목록에서 자기 문장을 읽은 직후에 온다.
+ * 설득이 아니라 "그 상황에 있는 팀이 우리 고객이다"를 표로 보여 준다.
+ */
+function CustomersSection() {
+  return (
+    <Section bordered wide>
+      <Reveal>
+        <SectionHeading
+          eyebrow={home.customers.eyebrow}
+          title={home.customers.title}
+          body={home.customers.body}
+        />
+        <CustomerTable segments={customerSegments} className="mt-12" />
+      </Reveal>
+    </Section>
+  );
+}
+
 function ServicesSection() {
   return (
     <Section bordered wide>
@@ -129,6 +151,7 @@ function ServicesSection() {
               >
                 <span className="font-mono text-(length:--text-eyebrow) tracking-[0.3em] text-faint">
                   {service.index}
+                  <span className="ml-3 text-accent">{service.tier}</span>
                 </span>
                 <h3 className="text-(length:--text-title) leading-tight font-semibold tracking-tight uppercase transition-colors group-hover:text-accent">
                   {service.title}

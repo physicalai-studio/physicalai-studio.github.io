@@ -14,6 +14,7 @@ import { serviceSchema } from "./schema";
 export const services = [
   {
     id: "pre-build-review",
+    tier: "A",
     index: "01",
     title: "PRE-BUILD REVIEW",
     titleKo: "제작 전 검토",
@@ -31,6 +32,7 @@ export const services = [
   },
   {
     id: "scenario-validation",
+    tier: "A",
     index: "02",
     title: "SCENARIO VALIDATION",
     titleKo: "작업 시나리오 검증",
@@ -48,6 +50,7 @@ export const services = [
   },
   {
     id: "virtual-commissioning",
+    tier: "B",
     index: "03",
     title: "VIRTUAL COMMISSIONING",
     titleKo: "가상 시운전",
@@ -65,6 +68,7 @@ export const services = [
   },
   {
     id: "sim-to-real-alignment",
+    tier: "B",
     index: "04",
     title: "SIM-TO-REAL ALIGNMENT",
     titleKo: "실기 정합",
@@ -82,6 +86,7 @@ export const services = [
   },
   {
     id: "physical-ai-testbed",
+    tier: "C",
     index: "05",
     title: "PHYSICAL AI TESTBED",
     titleKo: "피지컬 AI 테스트베드",

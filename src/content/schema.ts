@@ -85,6 +85,11 @@ export const mediaManifestSchema = z.record(z.string(), mediaAssetSchema);
 export const serviceSchema = z.object({
   id: slugSchema,
   index: nonEmpty,
+  /**
+   * 제품 사다리 위치 (사업_정의.md §5). A 는 진입, B 가 핵심 상품, C 는 고급 연구 고객.
+   * 서비스가 다섯이어도 **고객이 사는 단위는 셋**이라는 것을 화면에서 드러내기 위한 라벨이다.
+   */
+  tier: z.enum(["A", "B", "C"]),
   title: nonEmpty,
   titleKo: nonEmpty,
   outcome: nonEmpty,
@@ -341,6 +346,8 @@ export const homeSchema = z.object({
   problems: homeSectionSchema.extend({
     items: z.array(nonEmpty).min(1),
   }),
+  /** 02 — 고객군. Problems 바로 뒤에 온다(자기 문제를 읽은 직후가 자격 판정 시점). */
+  customers: homeSectionSchema,
   services: homeSectionSchema,
   /**
    * 03 — HOW WE WORK.
@@ -353,6 +360,21 @@ export const homeSchema = z.object({
     mediaSlot: nonEmpty,
   }),
   contact: homeSectionSchema.extend({ mediaSlot: nonEmpty }),
+});
+
+/**
+ * 고객군 1종 (사업_정의.md §4).
+ *
+ * **방문자가 자기를 알아보는 자리다.** 그래서 "우리가 무엇을 해준다"가 아니라
+ * `has`(이미 가진 것) → `pain`(그래서 겪는 것) → `gets`(그래서 받는 것) 순으로 적는다.
+ * 자격 판정을 방문자 스스로 하게 만드는 것이 이 블록의 목적이다.
+ */
+export const customerSegmentSchema = z.object({
+  id: slugSchema,
+  label: nonEmpty,
+  has: nonEmpty,
+  pain: nonEmpty,
+  gets: nonEmpty,
 });
 
 /** 워크플로 단계 — Problem → Model → Simulate → Validate → Deploy (가이드 §6). */
@@ -380,3 +402,4 @@ export type Home = z.infer<typeof homeSchema>;
 export type HomeSection = z.infer<typeof homeSectionSchema>;
 export type SectionHeadingContent = z.infer<typeof sectionHeadingSchema>;
 export type WorkflowStep = z.infer<typeof workflowStepSchema>;
+export type CustomerSegment = z.infer<typeof customerSegmentSchema>;

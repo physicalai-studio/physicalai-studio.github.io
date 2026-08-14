@@ -61,8 +61,10 @@ export default function ServicesPage() {
             <Reveal>
               <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-20">
                 <div>
+                  {/* 고객이 사는 단위는 다섯이 아니라 셋이다 — 제품 사다리를 함께 보인다(§5). */}
                   <p className="font-mono text-(length:--text-eyebrow) tracking-[0.3em] text-faint">
                     {service.index}
+                    <span className="ml-4 text-accent">PRODUCT {service.tier}</span>
                   </p>
                   <h2 className="mt-6 text-(length:--text-title) leading-tight font-semibold tracking-tight uppercase">
                     {service.title}
