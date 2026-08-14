@@ -4,6 +4,7 @@ import { PageBackdrop } from "@/components/section/PageBackdrop";
 import { Section } from "@/components/section/Section";
 import { SectionHeading } from "@/components/section/SectionHeading";
 import { capabilitiesHeading, capabilityGroups } from "@/content/capabilities";
+import { deliverableBundles, deliveryHeading } from "@/content/delivery";
 import { services } from "@/content/services";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -25,6 +26,36 @@ export default function ServicesPage() {
             title="Validate Before You Build."
             body="각 서비스는 기술이 아니라 고객이 얻는 결과를 기준으로 구성했습니다."
           />
+        </Section>
+
+        {/*
+          무엇을 받는가 — 기대치를 미리 맞추는 자리(사업_정의.md §7).
+          파일 하나가 아니라 묶음이라는 것을 목록으로 보인다.
+        */}
+        <Section bordered wide>
+          <Reveal>
+            <SectionHeading
+              eyebrow={deliveryHeading.eyebrow}
+              title={deliveryHeading.title}
+              body={deliveryHeading.body}
+            />
+            <div className="mt-12 grid gap-px border border-line bg-line md:grid-cols-2 lg:grid-cols-4">
+              {deliverableBundles.map((bundle) => (
+                <div key={bundle.id} className="bg-bg p-6">
+                  <p className="text-sm font-semibold tracking-[0.15em] uppercase">
+                    {bundle.title}
+                  </p>
+                  <ul className="mt-5 space-y-2.5">
+                    {bundle.items.map((item) => (
+                      <li key={item} className="text-sm leading-relaxed text-muted">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </Section>
 
         {/*

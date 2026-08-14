@@ -3,6 +3,7 @@ import { MediaSlot } from "@/components/media/MediaSlot";
 import { PageBackdrop } from "@/components/section/PageBackdrop";
 import { Section } from "@/components/section/Section";
 import { SectionHeading } from "@/components/section/SectionHeading";
+import { fidelityHeading, fidelityLayers } from "@/content/delivery";
 import { technologyGroups, workflowSteps } from "@/content/technology";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -41,6 +42,32 @@ export default function TechnologyPage() {
               </li>
             ))}
           </ol>
+        </Section>
+
+        {/*
+          충실도 선언 — "실제와 같습니다"를 대신하는 자리(사업_정의.md §6 ②).
+          층을 나눠 적으면 고객이 이 환경에서 어떤 질문에 답할 수 있는지 스스로 판단한다.
+        */}
+        <Section bordered wide>
+          <SectionHeading
+            eyebrow={fidelityHeading.eyebrow}
+            title={fidelityHeading.title}
+            body={fidelityHeading.body}
+          />
+          <dl className="mt-12 border-t border-line">
+            {fidelityLayers.map((layer) => (
+              <div
+                key={layer.code}
+                className="grid gap-2 border-b border-line py-6 md:grid-cols-[5rem_10rem_1fr] md:items-baseline md:gap-8"
+              >
+                <dt className="font-mono text-(length:--text-eyebrow) tracking-[0.3em] text-faint">
+                  {layer.code}
+                </dt>
+                <dd className="text-sm font-semibold tracking-[0.15em] uppercase">{layer.title}</dd>
+                <dd className="text-sm leading-relaxed text-muted">{layer.items}</dd>
+              </div>
+            ))}
+          </dl>
         </Section>
 
         {technologyGroups.map((group) => (

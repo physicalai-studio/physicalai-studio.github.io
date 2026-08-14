@@ -377,6 +377,30 @@ export const customerSegmentSchema = z.object({
   gets: nonEmpty,
 });
 
+/**
+ * 산출물 묶음 1종 (사업_정의.md §7).
+ *
+ * `.usd` 파일 하나가 아니라 **묶음**을 판다는 것을 화면에서 보이기 위한 구조다.
+ * 무엇이 함께 오는지 적어 두지 않으면 고객은 받은 것을 파일 개수로 센다.
+ */
+export const deliverableBundleSchema = z.object({
+  id: slugSchema,
+  title: nonEmpty,
+  items: z.array(nonEmpty).min(2),
+});
+
+/**
+ * 충실도 층 1개 (사업_정의.md §6 ②).
+ *
+ * **"실제와 같습니다"라고 말하지 않기 위한 장치다.** 무엇을 어느 수준까지 표현했는지를
+ * 층으로 나눠 선언하면, 고객은 그 시뮬레이션에서 어떤 질문에 답할 수 있는지 스스로 안다.
+ */
+export const fidelityLayerSchema = z.object({
+  code: nonEmpty,
+  title: nonEmpty,
+  items: nonEmpty,
+});
+
 /** 워크플로 단계 — Problem → Model → Simulate → Validate → Deploy (가이드 §6). */
 export const workflowStepSchema = z.object({
   id: slugSchema,
@@ -403,3 +427,5 @@ export type HomeSection = z.infer<typeof homeSectionSchema>;
 export type SectionHeadingContent = z.infer<typeof sectionHeadingSchema>;
 export type WorkflowStep = z.infer<typeof workflowStepSchema>;
 export type CustomerSegment = z.infer<typeof customerSegmentSchema>;
+export type DeliverableBundle = z.infer<typeof deliverableBundleSchema>;
+export type FidelityLayer = z.infer<typeof fidelityLayerSchema>;

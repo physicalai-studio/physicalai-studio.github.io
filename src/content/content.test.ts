@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { hasUnparsedMarkup } from "@/lib/richText";
 import { company } from "./company";
+import { contactPage } from "./contact";
+import { customerSegments } from "./customers";
+import { deliverableBundles, deliveryHeading, fidelityHeading, fidelityLayers } from "./delivery";
 import { home } from "./home";
 import { caseTextureSlot, getMediaAsset, isPublishableAsset, mediaManifest } from "./media";
 import { allProjects, findProjectBySlug, getVisibleProjects } from "./projects";
@@ -226,6 +229,43 @@ describe("케이스 스터디 텍스처", () => {
       "매우-긴-슬러그-이름",
     ]) {
       expect(getMediaAsset(caseTextureSlot(slug)).kind).toBe("image");
+    }
+  });
+});
+
+describe("화면에 나가는 문구", () => {
+  /** 객체 안의 모든 문자열을 경로와 함께 훑는다. */
+  function walk(value: unknown, path: string): { path: string; text: string }[] {
+    if (typeof value === "string") return [{ path, text: value }];
+    if (Array.isArray(value))
+      return value.flatMap((item, index) => walk(item, `${path}[${index}]`));
+    if (value && typeof value === "object") {
+      return Object.entries(value).flatMap(([key, child]) => walk(child, `${path}.${key}`));
+    }
+    return [];
+  }
+
+  const rendered = [
+    ["site", site],
+    ["home", home],
+    ["company", company],
+    ["services", services],
+    ["customers", customerSegments],
+    ["delivery.bundles", deliverableBundles],
+    ["delivery.fidelity", fidelityLayers],
+    ["delivery.heading", deliveryHeading],
+    ["delivery.fidelityHeading", fidelityHeading],
+    ["contact", contactPage],
+  ] as const;
+
+  it("마크다운 기호가 문구에 남아 있지 않다", () => {
+    // 콘텐츠 계층은 마크다운이 아니다. 문서 쓰던 습관으로 넣은 백틱·별표는
+    // 화면에 기호 그대로 나간다(2026-08-13 별표 사고와 같은 부류).
+    for (const [name, value] of rendered) {
+      for (const { path, text } of walk(value, name)) {
+        expect(text.includes("`"), `${path}: ${text}`).toBe(false);
+        expect(hasUnparsedMarkup(text), `${path}: ${text}`).toBe(false);
+      }
     }
   });
 });
