@@ -278,10 +278,38 @@ export const siteSchema = z.object({
   }),
 });
 
+/**
+ * HOW WE WORK 의 문(門) 하나 (docs/how_we_work.md).
+ *
+ * 이것은 작업 순서가 아니라 **아이디어가 현실이 되기 위해 통과해야 하는 관문**이다.
+ * 그래서 `workflowStepSchema`(운영 루프)와 별개로 둔다 — 둘은 같은 일을 다른 세계관으로
+ * 기술한 것이고, 홈페이지에는 이쪽을 쓴다(how_we_work.md §"전체가 하나의 문장").
+ */
+export const workGateSchema = z.object({
+  id: slugSchema,
+  index: nonEmpty,
+  /** 대문자 영문 라벨 (타이포그래피 §5). */
+  title: nonEmpty,
+  /** 같은 뜻의 한국어 한 줄. 영문 라벨만으로는 의미가 닫히지 않는다. */
+  titleKo: nonEmpty,
+  body: nonEmpty,
+});
+
 export const companySchema = z.object({
   philosophy: nonEmpty,
   philosophyBody: nonEmpty,
-  principles: z.array(z.object({ title: nonEmpty, body: nonEmpty })).min(1),
+  /**
+   * 이 사업이 현실에 접근하는 방법. About 과 홈이 같은 값을 읽는다.
+   *
+   * `gates` 를 정확히 5개로 못박는 이유: 다섯이 하나의 구조이고, 하나가 빠지면
+   * 남은 것이 "흔한 컨설팅 프로세스"로 되돌아간다(how_we_work.md §Abstract).
+   * 특히 04(경계 탐색)와 05(현실로 이전)가 빠지면 PASS/FAIL 검증 용역과 구분되지 않는다.
+   */
+  howWeWork: z.object({
+    title: nonEmpty,
+    body: nonEmpty,
+    gates: z.array(workGateSchema).length(5, "다섯 개의 문이 하나의 구조다"),
+  }),
   founder: z.object({
     name: nonEmpty,
     role: nonEmpty,
@@ -314,7 +342,11 @@ export const homeSchema = z.object({
     items: z.array(nonEmpty).min(1),
   }),
   services: homeSectionSchema,
-  workflow: homeSectionSchema,
+  /**
+   * 03 — HOW WE WORK.
+   * 제목은 `company.howWeWork.title` 이 단일 근원이므로 여기 두지 않는다(문구 드리프트 방지).
+   */
+  howWeWork: z.object({ eyebrow: nonEmpty, body: nonEmpty }),
   projects: homeSectionSchema.extend({ cta: navItemSchema }),
   technology: homeSectionSchema.extend({ cta: navItemSchema }),
   why: homeSectionSchema.extend({
@@ -343,6 +375,7 @@ export type TechnologyGroup = z.infer<typeof technologyGroupSchema>;
 export type CapabilityGroup = z.infer<typeof capabilityGroupSchema>;
 export type Site = z.infer<typeof siteSchema>;
 export type Company = z.infer<typeof companySchema>;
+export type WorkGate = z.infer<typeof workGateSchema>;
 export type Home = z.infer<typeof homeSchema>;
 export type HomeSection = z.infer<typeof homeSectionSchema>;
 export type SectionHeadingContent = z.infer<typeof sectionHeadingSchema>;

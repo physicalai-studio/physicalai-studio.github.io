@@ -4,17 +4,22 @@ import { homeSchema } from "./schema";
  * 홈 페이지 문구 (가이드 §8).
  *
  * 섹션 순서는 가이드가 정한 대로 유지한다:
- * Problems → Services → Workflow → Projects → Technology → Why → Contact.
+ * Problems → Services → How We Work → Projects → Technology → Why → Contact.
  * 각 섹션은 짧은 문장 하나로 승부한다 (디자인 컨셉 §7 SHORT COPY).
  */
 export const home = homeSchema.parse({
   hero: {
     /*
-      경계를 첫 화면에서 선언한다(사업_정의.md §1-1). 방문자가 30초 안에 알아야 할 것 중
-      첫 번째가 "이 회사가 무엇을 하는가"이고, 그 답은 **로봇을 만드는 곳이 아니라
-      로봇을 만드는 사람이 쓰는 시뮬레이션을 만드는 곳**이다.
+      첫 화면은 **무엇을 만들어 주는가**를 말한다(ADR-0010).
+
+      이전 문구는 "우리는 시뮬레이션, 당신은 로봇"이라는 역할 경계 선언이었다. 그러면
+      방문자가 30초 안에 받는 인상이 "이 회사가 무엇을 안 하는가"가 되고, 정작 제공물이
+      보이지 않는다. 방문자가 알아야 할 것은 **여기서 무엇을 받는가**다.
+
+      "FAST" 는 기간 숫자를 걸지 않는다 — 근거 없는 수치를 쓰지 않는 것이 이 사이트의 규칙이고
+      (사업_정의.md §2), 대신 바로 아래 `site.description` 이 무엇을 세워 주는지로 뒷받침한다.
     */
-    headlineLines: ["We Build the Simulation.", "You Build the Robot."],
+    headlineLines: ["Simulation Assets,", "Built Fast."],
     mediaSlot: "home-hero",
   },
 
@@ -36,19 +41,22 @@ export const home = homeSchema.parse({
   services: {
     eyebrow: "02 — Core Services",
     title: "Simulate Before You Build.",
-    body: "다섯 단계는 하나의 파이프라인입니다. 고객의 개발을 대신하지 않고, 그 개발이 이 위에서 돌게 만듭니다.",
+    body: "다섯 단계는 하나의 파이프라인입니다. 각 단계에서 무엇을 세워 넘겨 드리는지로 적었습니다.",
   },
 
-  workflow: {
-    eyebrow: "03 — Simulation Workflow",
-    title: "A Loop, Not a Line",
-    body: "실기에서 잰 차이가 모델로 되돌아옵니다. 한 바퀴 돌 때마다 추정값이 실측값으로 바뀝니다.",
+  /*
+    제목은 `company.howWeWork.title` 이 단일 근원이다 — About 과 홈이 같은 문장을 보여야 하므로
+    여기서 다시 적지 않는다. 본문만 홈의 진입 문맥에 맞춰 짧게 둔다.
+  */
+  howWeWork: {
+    eyebrow: "03 — How We Work",
+    body: "해결책에서 시작하지 않습니다. 현실에서 시작합니다. 고객이 가져온 것은 아직 사실이 아니라 가정이고, 그것이 근거가 되려면 다섯 개의 문을 지나야 합니다.",
   },
 
   projects: {
     eyebrow: "04 — Selected Projects",
     title: "Case Studies",
-    body: "로봇을 대신 만든 기록이 아니라, 그 개발이 무엇 위에서 돌았는지의 기록입니다.",
+    body: "무엇을 세워 넘겼고, 그 위에서 무엇이 돌았고, 실기와 얼마나 맞았는지의 기록입니다.",
     cta: { label: "VIEW ALL PROJECTS", href: "/projects" },
   },
 
@@ -62,7 +70,7 @@ export const home = homeSchema.parse({
   why: {
     eyebrow: "06 — Why Simulation First",
     title: "Engineering Before Assumption.",
-    body: "가상환경에서 발견한 문제는 수정 비용이 거의 들지 않습니다. 실물에서 발견하면 그렇지 않습니다. 다만 그러려면 시뮬레이션이 믿을 만해야 하고, 도구를 다루는 것과 로봇을 아는 것은 다른 일입니다 — 그 차이는 결론이 아니라 결론에 붙은 신뢰 등급에서 드러납니다.",
+    body: "가상환경에서 발견한 문제는 수정 비용이 거의 들지 않습니다. 실물에서 발견하면 그렇지 않습니다. 다만 빨리 세우는 것만으로는 부족합니다 — 그 에셋에서 나온 숫자가 실기의 숫자와 항목별로 맞대 볼 수 있어야 하고, 그래서 모든 결론에 신뢰 등급을 붙여 드립니다.",
     mediaSlot: "home-why",
   },
 

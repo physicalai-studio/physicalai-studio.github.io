@@ -3,6 +3,7 @@ import { ButtonLink } from "@/components/common/Button";
 import { Container } from "@/components/common/Container";
 import { Reveal } from "@/components/common/Reveal";
 import { MediaSlot } from "@/components/media/MediaSlot";
+import { GateList } from "@/components/section/GateList";
 import { Section } from "@/components/section/Section";
 import { SectionHeading } from "@/components/section/SectionHeading";
 import { company } from "@/content/company";
@@ -10,13 +11,13 @@ import { home } from "@/content/home";
 import { getVisibleProjects } from "@/content/projects";
 import { services } from "@/content/services";
 import { site } from "@/content/site";
-import { technologyGroups, workflowSteps } from "@/content/technology";
+import { technologyGroups } from "@/content/technology";
 
 /**
  * 홈 (가이드 §8).
  *
  * Full Viewport Hero 아래로 7개 섹션이 이어진다:
- * Problems → Services → Workflow → Projects → Technology → Why → Contact.
+ * Problems → Services → How We Work → Projects → Technology → Why → Contact.
  * 각 섹션은 한 가지 메시지만 전달한다 (디자인 컨셉 §16).
  */
 export default function HomePage() {
@@ -27,7 +28,7 @@ export default function HomePage() {
       <HeroSection />
       <ProblemsSection />
       <ServicesSection />
-      <WorkflowSection />
+      <HowWeWorkSection />
       {projects.length > 0 ? <ProjectsSection /> : null}
       <TechnologySection />
       <WhySection />
@@ -142,27 +143,24 @@ function ServicesSection() {
   );
 }
 
-/** 03 — Problem → Model → Simulate → Validate → Deploy (가이드 §6). */
-function WorkflowSection() {
+/**
+ * 03 — 다섯 개의 문 (docs/how_we_work.md).
+ *
+ * 여기에 운영 루프(PROBLEM → … → MEASURE)를 두지 않는다. 그쪽은 같은 일을
+ * 고객 친화적 프로세스로 기술한 것이라 어느 용역사와도 구분되지 않으므로,
+ * 홈에는 **어떻게 생각하는가**를 보여주는 이쪽을 쓴다(how_we_work.md §213).
+ * 운영 루프는 /technology 가 계속 보여준다.
+ */
+function HowWeWorkSection() {
   return (
     <Section bordered wide>
       <Reveal>
         <SectionHeading
-          eyebrow={home.workflow.eyebrow}
-          title={home.workflow.title}
-          body={home.workflow.body}
+          eyebrow={home.howWeWork.eyebrow}
+          title={company.howWeWork.title}
+          body={home.howWeWork.body}
         />
-        <ol className="mt-16 grid gap-px border border-line bg-line md:grid-cols-5">
-          {workflowSteps.map((step, index) => (
-            <li key={step.id} className="bg-bg p-6">
-              <p className="font-mono text-(length:--text-eyebrow) tracking-[0.3em] text-faint">
-                {String(index + 1).padStart(2, "0")}
-              </p>
-              <p className="mt-4 text-sm font-semibold tracking-[0.15em] uppercase">{step.label}</p>
-              <p className="mt-3 text-sm leading-relaxed text-muted">{step.body}</p>
-            </li>
-          ))}
-        </ol>
+        <GateList gates={company.howWeWork.gates} className="mt-16" />
       </Reveal>
     </Section>
   );
@@ -238,30 +236,19 @@ function TechnologySection() {
   );
 }
 
-/** 06 — 시뮬레이션을 먼저 하는 이유. 회사 원칙을 그대로 재사용한다. */
+/**
+ * 06 — 시뮬레이션을 먼저 하는 이유.
+ *
+ * 목록을 붙이지 않는다. 03 이 이미 다섯 문을 펼쳤으므로 같은 값을 다시 나열하면
+ * 한 페이지에서 두 번 읽히고, "ONE SCREEN, ONE MESSAGE"(디자인 컨셉 §16)도 깨진다.
+ */
 function WhySection() {
   return (
     <Section bordered wide>
       <Reveal>
         <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-20">
           <MediaSlot slotId={home.why.mediaSlot} className="aspect-4/3 w-full" />
-          <div>
-            <SectionHeading
-              eyebrow={home.why.eyebrow}
-              title={home.why.title}
-              body={home.why.body}
-            />
-            <dl className="mt-12 border-t border-line">
-              {company.principles.map((principle) => (
-                <div key={principle.title} className="border-b border-line py-6">
-                  <dt className="text-sm font-semibold tracking-[0.15em] uppercase">
-                    {principle.title}
-                  </dt>
-                  <dd className="mt-2 text-sm leading-relaxed text-muted">{principle.body}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+          <SectionHeading eyebrow={home.why.eyebrow} title={home.why.title} body={home.why.body} />
         </div>
       </Reveal>
     </Section>

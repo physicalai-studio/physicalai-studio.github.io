@@ -1,3 +1,4 @@
+import { GateList } from "@/components/section/GateList";
 import { PageBackdrop } from "@/components/section/PageBackdrop";
 import { Section } from "@/components/section/Section";
 import { SectionHeading } from "@/components/section/SectionHeading";
@@ -29,21 +30,17 @@ export default function AboutPage() {
           />
         </Section>
 
+        {/*
+          HOW WE WORK 은 업무 순서가 아니라 아이디어가 통과해야 하는 문이다 —
+          제목이 그 결과("가정을 근거로 바꾼다")를 먼저 말하고, 목록이 경로를 편다.
+        */}
         <Section bordered wide>
-          <SectionHeading eyebrow="Principles" title="How We Work" />
-          <dl className="mt-12 border-t border-line">
-            {company.principles.map((principle) => (
-              <div
-                key={principle.title}
-                className="grid gap-4 border-b border-line py-8 md:grid-cols-[1fr_2fr] md:gap-16"
-              >
-                <dt className="text-sm font-semibold tracking-[0.15em] uppercase">
-                  {principle.title}
-                </dt>
-                <dd className="leading-relaxed text-muted">{principle.body}</dd>
-              </div>
-            ))}
-          </dl>
+          <SectionHeading
+            eyebrow="How We Work"
+            title={company.howWeWork.title}
+            body={company.howWeWork.body}
+          />
+          <GateList gates={company.howWeWork.gates} className="mt-12" />
         </Section>
 
         <Section bordered wide>

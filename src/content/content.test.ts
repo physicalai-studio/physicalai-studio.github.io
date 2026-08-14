@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { hasUnparsedMarkup } from "@/lib/richText";
 import { company } from "./company";
+import { home } from "./home";
 import { caseTextureSlot, getMediaAsset, isPublishableAsset, mediaManifest } from "./media";
 import { allProjects, findProjectBySlug, getVisibleProjects } from "./projects";
 import { mediaAssetSchema } from "./schema";
@@ -19,7 +20,20 @@ describe("content 무결성", () => {
     expect(site.brand.length).toBeGreaterThan(0);
     expect(services).toHaveLength(5);
     expect(technologyGroups.length).toBeGreaterThan(0);
-    expect(company.principles.length).toBeGreaterThan(0);
+    expect(company.howWeWork.gates).toHaveLength(5);
+  });
+
+  it("HOW WE WORK 이 경계 탐색과 현실 이전으로 닫힌다", () => {
+    // 다섯 문 중 04·05 가 이 사업의 차별점이다(docs/how_we_work.md).
+    // 04 가 빠지면 PASS/FAIL 검증 용역, 05 가 빠지면 "돌아가는 그림"으로 되돌아간다.
+    const ids = company.howWeWork.gates.map((gate) => gate.id);
+    expect(ids).toEqual(["question", "model", "constrain", "boundary", "transfer"]);
+  });
+
+  it("홈이 About 과 같은 HOW WE WORK 제목을 쓴다", () => {
+    // 제목은 company 가 단일 근원이다. home 이 제목을 따로 들고 있으면 문구가 갈라진다.
+    expect(home).not.toHaveProperty("howWeWork.title");
+    expect(company.howWeWork.title.length).toBeGreaterThan(0);
   });
 
   it("워크플로가 계측 단계로 닫힌다", () => {
