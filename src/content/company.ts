@@ -7,19 +7,32 @@ import { companySchema } from "./schema";
 export const company = companySchema.parse({
   philosophy: "ENGINEERING BEFORE ASSUMPTION.",
   philosophyBody:
-    "로봇 시스템은 만든 뒤에 문제를 발견하면 비용이 큽니다. 우리는 그 문제를 가상환경에서 먼저 찾습니다.",
+    "로봇 시스템은 만든 뒤에 문제를 발견하면 비용이 큽니다. 그래서 시뮬레이션에서 출발해 개발을 가속하고 실기 배포로 닫는 하나의 파이프라인을 만들어 드립니다 — 검증이 개발의 앞뒤에 붙는 단계가 아니라, 처음부터 끝까지 이어지는 한 줄이 되도록.",
+  /*
+    원칙은 나열이 아니라 **파이프라인의 순서**로 읽혀야 한다.
+    출발(시뮬레이션) → 기준(검증) → 가속(개발) → 닫음(배포·계측) → 범위(전 구간), 그리고
+    그 전부를 관통하는 일하는 방식이 마지막에 온다. 순서를 바꾸면 파이프라인이 흐트러진다.
+  */
   principles: [
     {
       title: "SIMULATION FIRST",
-      body: "설비와 로봇을 제작하기 전에 가상환경에서 먼저 검증합니다.",
+      body: "설비와 로봇을 제작하기 전에 가상환경에서 먼저 검증합니다. 여기서 찾은 문제는 수정 비용이 거의 들지 않습니다.",
     },
     {
       title: "ENGINEERING VALIDATION",
       body: "3D 영상이 아니라 도달성 · 간섭 · 동작 · 사이클 타임을 엔지니어링 기준으로 확인합니다.",
     },
     {
-      title: "SIM-TO-REAL",
-      body: "시뮬레이션에서 끝내지 않고 실제 로봇 시스템으로 연결되는 구조를 만듭니다.",
+      title: "ACCELERATED DEVELOPMENT",
+      body: "같은 환경 위에서 제어와 인지를 함께 개발합니다. 실기를 기다리지 않고 돌릴 수 있으면 개발 일정이 하드웨어 일정에서 풀립니다.",
+    },
+    {
+      title: "DEPLOY AND MEASURE",
+      body: "시뮬레이션에서 끝내지 않습니다. 실기에 올리고 차이를 재서 모델로 되돌립니다 — 파이프라인은 배포로 닫힙니다.",
+    },
+    {
+      title: "END-TO-END",
+      body: "로봇 한 대가 아니라 상위 지시가 동작까지 내려가는 전 구간을 하나로 봅니다. 결과를 가르는 것은 대개 계층 사이입니다.",
     },
     {
       title: "SMALL TEAM. DEEP ENGINEERING.",
