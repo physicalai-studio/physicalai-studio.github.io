@@ -10,16 +10,15 @@ import { homeSchema } from "./schema";
 export const home = homeSchema.parse({
   hero: {
     /*
-      사업의 한 문장이 그대로 첫 화면이다(사업_정의.md §1 · Blueprint §3 Core Boundary).
+      사업의 한 문장이 그대로 첫 화면이다(사업_정의.md §1).
 
-      ADR-0010 은 "경계 선언이 아니라 제공물로 말한다"고 정했다. 이 문구는 그 규칙을 지킨다 —
-      첫 줄이 **제공물**이고(세계를 만든다, 자산이 아니라 세계다), 둘째 줄은 방어가 아니라
-      그 제공물의 **범위를 세 단어로 좁히는** 말이다. 사이트 전체에서 부정형은 이 한 번뿐이다.
+      첫 줄이 **무엇을 만드는가**(자산이 아니라 세계), 나머지가 **왜 만드는가**다 —
+      아직 존재하지 않는 현실을 먼저 설계해 본다는 뜻이고, 그래서 이 일은 예측이 아니라 공학이다.
+      역할 경계("not the brain")는 첫 화면이 아니라 문서 §2 와 About 이 맡는다.
 
-      "Simulation Assets, Built Fast." 를 대체한다 — 자산은 Level 1 이고 우리가 파는 것은
-      Level 3(연구 환경)이며, 속도는 결과이지 정체성이 아니다(사업_정의.md §5).
+      줄바꿈 위치는 디자인이 정한다 — 뒤 문장을 두 줄로 끊어 세 줄이 계단으로 읽히게 했다.
     */
-    headlineLines: ["We Build the World.", "Not the Brain."],
+    headlineLines: ["We Build the World.", "Engineer Reality", "Before It Exists."],
     mediaSlot: "home-hero",
   },
 
