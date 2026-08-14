@@ -24,7 +24,7 @@ export default function ProjectsPage() {
             as="h1"
             eyebrow="Projects"
             title="Case Studies"
-            body="포트폴리오 갤러리가 아니라, 무엇을 검증했고 무엇이 확인되었는지를 기록합니다."
+            body="포트폴리오 갤러리가 아닙니다. 로봇을 대신 만든 기록이 아니라, 고객의 개발이 무엇 위에서 돌았고 그때 무엇이 확인되었는지의 기록입니다."
           />
         </Section>
 

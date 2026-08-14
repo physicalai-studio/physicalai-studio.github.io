@@ -22,7 +22,7 @@ export default function TechnologyPage() {
             as="h1"
             eyebrow="Technology"
             title="Engineering Stack"
-            body="기술 이름을 나열하는 대신, 각 기술이 프로젝트에서 맡는 역할을 적습니다."
+            body="기술 이름을 나열하는 대신, 각 기술이 이 파이프라인에서 맡는 역할을 적습니다."
           />
         </Section>
 
