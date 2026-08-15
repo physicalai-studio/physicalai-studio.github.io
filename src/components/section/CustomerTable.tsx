@@ -27,9 +27,9 @@ export function CustomerTable({
             {segment.label}
           </dt>
           <dd className="grid gap-6 md:col-span-9 md:grid-cols-3 md:gap-10">
-            <Cell label="has" body={segment.has} />
-            <Cell label="pain" body={segment.pain} />
-            <Cell label="gets" body={segment.gets} tone="fg" />
+            <Cell label="현재" body={segment.has} />
+            <Cell label="막힌 점" body={segment.pain} />
+            <Cell label="받는 판단" body={segment.gets} tone="fg" />
           </dd>
         </div>
       ))}

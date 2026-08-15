@@ -16,9 +16,9 @@ import { sectionHeadingSchema } from "./schema";
 export const contactPage = sectionHeadingSchema.parse({
   eyebrow: "Contact",
   title: "Start a Project",
-  body: "로봇이 무엇을 해야 하는지, 어떤 환경에서 어떤 순서로 하는지 알려주세요. 창업자가 직접 검토해 검증 가능한 범위와 필요한 자료부터 답변드립니다.",
+  body: "도입 전이라면 현재 공정, 자동화할 작업과 후보 장비를 알려주세요. 이미 로봇이 있다면 장비, 환경과 작업 순서를 알려주세요. 창업자가 직접 검토해 판단할 질문과 필요한 자료부터 답변드립니다.",
 });
 
 /** 검색 결과에 나가는 한 줄. 본문보다 짧게 줄인다. */
 export const contactDescription =
-  "로봇이 할 일과 환경, 작업 시나리오를 주시면 그것을 그대로 돌려볼 수 있는 디지털 테스트베드를 만들어 드립니다.";
+  "로봇 도입·구매 전 타당성 검토부터 보유 시스템의 시나리오 검증과 디지털 테스트베드 구축까지 상담합니다.";

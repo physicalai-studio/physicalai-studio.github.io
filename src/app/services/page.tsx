@@ -11,7 +11,7 @@ import { buildPageMetadata } from "@/lib/seo";
 export const metadata = buildPageMetadata({
   title: "Services",
   description:
-    "제작 전 검증과 재사용 가능한 로봇 시뮬레이션 테스트베드 구축. 가상 시운전과 Physical AI 환경은 필요에 따라 확장합니다.",
+    "로봇 도입·구매 전 타당성 및 사양 검토와 재사용 가능한 시뮬레이션 테스트베드 구축. 가상 시운전과 Physical AI 환경은 필요에 따라 확장합니다.",
   path: "/services",
 });
 
@@ -25,7 +25,7 @@ export default function ServicesPage() {
             as="h1"
             eyebrow="Services"
             title="Validate Before You Build."
-            body="각 서비스는 기술이 아니라 고객이 얻는 결과를 기준으로 구성했습니다."
+            body="아직 로봇이 없어도 시작할 수 있습니다. 도입 여부와 구매 사양을 먼저 판단하고, 이후 검증 환경까지 이어갑니다."
           />
         </Section>
 

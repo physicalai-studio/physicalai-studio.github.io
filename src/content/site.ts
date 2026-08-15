@@ -16,7 +16,7 @@ export const site = siteSchema.parse({
   */
   positioning: "Simulation Testbeds for Robotics and Automation",
   description:
-    "로봇과 자동화 설비를 제작하기 전에 도달성·충돌·동작 시나리오와 제어 연동을 검증합니다. 검토 결과뿐 아니라 이후에도 반복 사용할 수 있는 디지털 테스트베드를 인계합니다.",
+    "로봇 도입 전에는 공정과 후보 장비의 성립 가능성을 비교하고, 도입 후에는 동작 시나리오와 제어 연동을 검증합니다. 구매 판단부터 반복 사용할 디지털 테스트베드까지 연결합니다.",
   // 배포 시 NEXT_PUBLIC_SITE_URL 로 주입한다. 미설정이면 해석되지 않는 예약 도메인을 쓴다
   // — 실제 도메인 오기입 상태로 색인되는 사고를 막기 위함이다(debt-005).
   baseUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.invalid",
