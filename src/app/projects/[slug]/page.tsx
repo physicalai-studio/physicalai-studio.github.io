@@ -68,6 +68,35 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         ) : null}
       </Section>
 
+      {project.engagement ? (
+        <Section bordered wide>
+          <SectionHeading
+            as="h2"
+            eyebrow="Project Context"
+            title="이 작업이 지원한 결정"
+            body={project.engagement.decision}
+          />
+          <dl className="mt-10 grid gap-8 md:grid-cols-2">
+            <div className="border-t border-line pt-5">
+              <dt className="font-mono text-(length:--text-eyebrow) tracking-[0.2em] text-faint uppercase">
+                Delivered
+              </dt>
+              <dd className="mt-3 text-sm leading-relaxed text-muted">
+                {project.engagement.delivered}
+              </dd>
+            </div>
+            <div className="border-t border-line pt-5">
+              <dt className="font-mono text-(length:--text-eyebrow) tracking-[0.2em] text-faint uppercase">
+                Disclosure
+              </dt>
+              <dd className="mt-3 text-sm leading-relaxed text-muted">
+                {project.engagement.disclosure}
+              </dd>
+            </div>
+          </dl>
+        </Section>
+      ) : null}
+
       {/*
         케이스 스터디 상단은 사진이 아니라 **구성도**다.
         이 자리에서 답해야 하는 질문은 "무엇이 예쁘게 보이는가"가 아니라

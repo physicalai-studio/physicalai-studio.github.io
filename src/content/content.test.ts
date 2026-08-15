@@ -5,10 +5,11 @@ import { contactPage } from "./contact";
 import { customerSegments } from "./customers";
 import { deliverableBundles, deliveryHeading, fidelityHeading, fidelityLayers } from "./delivery";
 import { home } from "./home";
+import { engagement } from "./engagement";
 import { caseTextureSlot, getMediaAsset, isPublishableAsset, mediaManifest } from "./media";
 import { allProjects, findProjectBySlug, getVisibleProjects } from "./projects";
 import { mediaAssetSchema } from "./schema";
-import { services } from "./services";
+import { primaryServiceIds, services } from "./services";
 import { site } from "./site";
 import { technologyGroups, workflowSteps } from "./technology";
 
@@ -24,6 +25,15 @@ describe("content 무결성", () => {
     expect(services).toHaveLength(5);
     expect(technologyGroups.length).toBeGreaterThan(0);
     expect(company.howWeWork.gates).toHaveLength(5);
+    expect(engagement.inquiry.steps).toHaveLength(4);
+  });
+
+  it("홈의 주력 상품과 연구 확장이 분리되어 있다", () => {
+    expect(primaryServiceIds).toEqual(["pre-build-review", "scenario-validation"]);
+    expect(technologyGroups.find((group) => group.id === "learning")?.stage).toBe("research");
+    expect(technologyGroups.filter((group) => group.stage === "delivery").length).toBeGreaterThan(
+      0,
+    );
   });
 
   it("HOW WE WORK 이 경계 탐색과 현실 이전으로 닫힌다", () => {
@@ -256,6 +266,7 @@ describe("화면에 나가는 문구", () => {
     ["delivery.heading", deliveryHeading],
     ["delivery.fidelityHeading", fidelityHeading],
     ["contact", contactPage],
+    ["engagement", engagement],
   ] as const;
 
   it("마크다운 기호가 문구에 남아 있지 않다", () => {

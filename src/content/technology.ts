@@ -13,6 +13,7 @@ export const technologyGroups = [
   {
     id: "simulation",
     title: "SIMULATION",
+    stage: "delivery",
     items: [
       { name: "NVIDIA Isaac Sim", role: "물리 기반 로봇 시뮬레이션 환경의 기본 플랫폼" },
       { name: "NVIDIA Isaac Lab", role: "강화학습 · 모방학습 실험 환경 구성" },
@@ -39,6 +40,7 @@ export const technologyGroups = [
   {
     id: "robotics",
     title: "ROBOTICS",
+    stage: "delivery",
     mediaSlot: "technology-actuator",
     items: [
       { name: "6축 산업용 로봇암", role: "정밀 자세 유지와 직선 이송 작업의 도달성 검증" },
@@ -54,6 +56,7 @@ export const technologyGroups = [
   {
     id: "control",
     title: "CONTROL",
+    stage: "delivery",
     items: [
       {
         name: "역기구학 · 특이점 해석",
@@ -71,6 +74,7 @@ export const technologyGroups = [
   {
     id: "perception",
     title: "PERCEPTION",
+    stage: "delivery",
     items: [
       { name: "ROS2", role: "제어 · 인지 · 시뮬레이션을 잇는 통신 계층" },
       { name: "NVIDIA Isaac ROS", role: "엣지 보드에서 가속되는 인지 파이프라인" },
@@ -88,6 +92,7 @@ export const technologyGroups = [
   {
     id: "learning",
     title: "LEARNING",
+    stage: "research",
     items: [
       { name: "PyTorch", role: "정책 · 인지 모델 학습" },
       { name: "Imitation Learning", role: "시연 데이터 기반 작업 학습 — 조사 · 검토 단계" },
@@ -101,6 +106,7 @@ export const technologyGroups = [
   {
     id: "engineering",
     title: "ENGINEERING",
+    stage: "delivery",
     items: [
       { name: "Python / C++", role: "시뮬레이션 확장과 제어 노드 구현" },
       { name: "Docker", role: "재현 가능한 실행 환경 고정" },

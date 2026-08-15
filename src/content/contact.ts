@@ -16,7 +16,7 @@ import { sectionHeadingSchema } from "./schema";
 export const contactPage = sectionHeadingSchema.parse({
   eyebrow: "Contact",
   title: "Start a Project",
-  body: "로봇이 무엇을 해야 하는지, 어떤 환경에서 어떤 순서로 하는지 알려주세요. 저희가 만드는 것은 그 시나리오를 그대로 돌려볼 수 있는 디지털 테스트베드입니다 — 로봇 · 설비 모델과 작업 공간을 세우고, 나온 결과에 신뢰 등급을 붙여 드립니다.",
+  body: "로봇이 무엇을 해야 하는지, 어떤 환경에서 어떤 순서로 하는지 알려주세요. 창업자가 직접 검토해 검증 가능한 범위와 필요한 자료부터 답변드립니다.",
 });
 
 /** 검색 결과에 나가는 한 줄. 본문보다 짧게 줄인다. */

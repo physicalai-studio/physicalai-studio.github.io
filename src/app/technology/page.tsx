@@ -14,6 +14,8 @@ export const metadata = buildPageMetadata({
 });
 
 export default function TechnologyPage() {
+  const deliveryGroups = technologyGroups.filter((group) => group.stage === "delivery");
+  const researchGroups = technologyGroups.filter((group) => group.stage === "research");
   return (
     <div className="relative">
       <PageBackdrop slotId="technology-backdrop" />
@@ -70,7 +72,15 @@ export default function TechnologyPage() {
           </dl>
         </Section>
 
-        {technologyGroups.map((group) => (
+        <Section bordered wide>
+          <SectionHeading
+            eyebrow="Delivery Stack"
+            title="현재 프로젝트에 사용하는 기술"
+            body="아래 항목은 모델 구성, 검증, 실기 연동과 인계에 실제로 사용하는 기술입니다."
+          />
+        </Section>
+
+        {deliveryGroups.map((group) => (
           <Section key={group.id} id={group.id} bordered wide>
             <Reveal>
               <div className="grid gap-10 lg:grid-cols-[1fr_2fr] lg:gap-20">
@@ -82,6 +92,37 @@ export default function TechnologyPage() {
                     <MediaSlot slotId={group.mediaSlot} className="mt-8 aspect-square w-full" />
                   ) : null}
                 </div>
+                <dl className="border-t border-line">
+                  {group.items.map((item) => (
+                    <div
+                      key={item.name}
+                      className="grid gap-2 border-b border-line py-6 md:grid-cols-[1fr_2fr] md:gap-8"
+                    >
+                      <dt className="font-medium">{item.name}</dt>
+                      <dd className="text-sm leading-relaxed text-muted">{item.role}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </Reveal>
+          </Section>
+        ))}
+
+        <Section bordered wide>
+          <SectionHeading
+            eyebrow="Research Extension"
+            title="요건이 맞을 때 확장하는 연구 기술"
+            body="강화학습·모방학습과 Foundation Policy는 기본 납품 범위가 아닙니다. 고객이 정책, 데이터와 평가 기준을 보유한 경우 테스트베드 위에 연결할 범위를 별도로 합의합니다."
+          />
+        </Section>
+
+        {researchGroups.map((group) => (
+          <Section key={group.id} id={group.id} bordered wide>
+            <Reveal>
+              <div className="grid gap-10 lg:grid-cols-[1fr_2fr] lg:gap-20">
+                <h2 className="text-(length:--text-title) font-semibold tracking-tight uppercase">
+                  {group.title}
+                </h2>
                 <dl className="border-t border-line">
                   {group.items.map((item) => (
                     <div

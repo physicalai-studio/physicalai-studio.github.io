@@ -103,3 +103,6 @@ export const services = [
     mediaSlot: "service-physical-ai",
   },
 ].map((service) => serviceSchema.parse(service));
+
+/** 홈의 구매 동선에 노출하는 주력 상품. 나머지는 이 환경 위에서 확장하는 서비스다. */
+export const primaryServiceIds = ["pre-build-review", "scenario-validation"] as const;

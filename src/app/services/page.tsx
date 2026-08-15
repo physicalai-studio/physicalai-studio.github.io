@@ -10,7 +10,8 @@ import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
   title: "Services",
-  description: "로봇 적용 가능성 검토부터 가상 시운전, 디지털 트윈, Physical AI 테스트베드까지.",
+  description:
+    "제작 전 검증과 재사용 가능한 로봇 시뮬레이션 테스트베드 구축. 가상 시운전과 Physical AI 환경은 필요에 따라 확장합니다.",
   path: "/services",
 });
 

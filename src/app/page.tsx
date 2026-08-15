@@ -11,7 +11,7 @@ import { company } from "@/content/company";
 import { customerSegments } from "@/content/customers";
 import { home } from "@/content/home";
 import { getVisibleProjects } from "@/content/projects";
-import { services } from "@/content/services";
+import { primaryServiceIds, services } from "@/content/services";
 import { site } from "@/content/site";
 import { technologyGroups } from "@/content/technology";
 
@@ -134,6 +134,9 @@ function CustomersSection() {
 }
 
 function ServicesSection() {
+  const primaryServices = services.filter((service) =>
+    primaryServiceIds.some((id) => id === service.id),
+  );
   return (
     <Section bordered wide>
       <Reveal>
@@ -143,7 +146,7 @@ function ServicesSection() {
           body={home.services.body}
         />
         <ul className="mt-16 border-t border-line">
-          {services.map((service) => (
+          {primaryServices.map((service) => (
             <li key={service.id} className="border-b border-line">
               <Link
                 href={`/services#${service.id}`}
@@ -236,20 +239,22 @@ function TechnologySection() {
           body={home.technology.body}
         />
         <div className="mt-16 grid gap-px border border-line bg-line md:grid-cols-2 lg:grid-cols-4">
-          {technologyGroups.map((group) => (
-            <div key={group.id} className="bg-bg p-6">
-              <p className="font-mono text-(length:--text-eyebrow) tracking-[0.3em] text-faint uppercase">
-                {group.title}
-              </p>
-              <ul className="mt-6 space-y-3">
-                {group.items.map((item) => (
-                  <li key={item.name} className="text-sm">
-                    {item.name}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {technologyGroups
+            .filter((group) => group.stage === "delivery")
+            .map((group) => (
+              <div key={group.id} className="bg-bg p-6">
+                <p className="font-mono text-(length:--text-eyebrow) tracking-[0.3em] text-faint uppercase">
+                  {group.title}
+                </p>
+                <ul className="mt-6 space-y-3">
+                  {group.items.map((item) => (
+                    <li key={item.name} className="text-sm">
+                      {item.name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
         </div>
         <div className="mt-16">
           <ButtonLink href={home.technology.cta.href}>{home.technology.cta.label}</ButtonLink>

@@ -3,6 +3,7 @@ import { Section } from "@/components/section/Section";
 import { SectionHeading } from "@/components/section/SectionHeading";
 import { contactDescription, contactPage } from "@/content/contact";
 import { site } from "@/content/site";
+import { engagement } from "@/content/engagement";
 import { telHref } from "@/lib/contact";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -54,11 +55,42 @@ export default function ContactPage() {
             </div>
           </div>
 
-          <SectionHeading
-            eyebrow="Coming next"
-            title="Project Inquiry Form"
-            body="프로젝트 유형과 내용을 입력하는 문의 폼은 다음 단계에서 제공합니다. 그전까지는 이메일로 문의해 주세요."
-          />
+          <div className="mt-24 grid gap-16 lg:grid-cols-2">
+            <div>
+              <SectionHeading eyebrow="What to Send" title="있는 자료부터 보내주세요" />
+              <ul className="mt-8 border-t border-line">
+                {engagement.inquiry.inputs.map((input) => (
+                  <li key={input} className="border-b border-line py-4 text-sm text-muted">
+                    {input}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <SectionHeading
+                eyebrow="First Response"
+                title="범위부터 확인합니다"
+                body={engagement.inquiry.response}
+              />
+              <p className="mt-8 text-sm leading-relaxed text-muted">
+                {engagement.inquiry.confidentiality}
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-24">
+            <SectionHeading eyebrow="Engagement" title="문의에서 인계까지" />
+            <ol className="mt-8 grid gap-px border border-line bg-line md:grid-cols-4">
+              {engagement.inquiry.steps.map((step, index) => (
+                <li key={step} className="bg-bg p-6">
+                  <p className="font-mono text-(length:--text-eyebrow) text-faint">
+                    {String(index + 1).padStart(2, "0")}
+                  </p>
+                  <p className="mt-4 text-sm leading-relaxed text-muted">{step}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       </Section>
     </div>

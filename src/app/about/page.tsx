@@ -3,6 +3,7 @@ import { PageBackdrop } from "@/components/section/PageBackdrop";
 import { Section } from "@/components/section/Section";
 import { SectionHeading } from "@/components/section/SectionHeading";
 import { company } from "@/content/company";
+import { engagement } from "@/content/engagement";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
@@ -46,6 +47,21 @@ export default function AboutPage() {
         <Section bordered wide>
           <SectionHeading eyebrow={company.founder.role} title={company.founder.name} />
           <p className="mt-8 max-w-2xl leading-relaxed text-muted">{company.founder.summary}</p>
+        </Section>
+
+        <Section bordered wide>
+          <SectionHeading
+            eyebrow={engagement.founderLed.eyebrow}
+            title={engagement.founderLed.title}
+            body={engagement.founderLed.body}
+          />
+          <ul className="mt-12 border-t border-line">
+            {engagement.founderLed.boundaries.map((boundary) => (
+              <li key={boundary} className="border-b border-line py-5 text-sm text-muted">
+                {boundary}
+              </li>
+            ))}
+          </ul>
         </Section>
       </div>
     </div>

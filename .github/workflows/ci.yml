@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, codex/content-business-positioning]
   pull_request:
 
 jobs:

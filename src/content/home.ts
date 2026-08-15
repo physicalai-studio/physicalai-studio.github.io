@@ -18,7 +18,7 @@ export const home = homeSchema.parse({
 
       줄바꿈 위치는 디자인이 정한다 — 뒤 문장을 두 줄로 끊어 세 줄이 계단으로 읽히게 했다.
     */
-    headlineLines: ["We Build the World.", "Engineer Reality", "Before It Exists."],
+    headlineLines: ["Validate Before", "You Build."],
     mediaSlot: "home-hero",
   },
 
@@ -54,8 +54,8 @@ export const home = homeSchema.parse({
 
   services: {
     eyebrow: "03 — Product Ladder",
-    title: "Start Small. Keep the World.",
-    body: "고객이 사는 단위는 셋입니다 — A 타당성 검토, B 재사용 테스트베드, C 연구 환경. A 에서 시작해도 만든 세계는 남고, 다음 단계는 그 위에 얹힙니다.",
+    title: "Two Ways to Start.",
+    body: "제작 전 검증으로 빠르게 판단하거나, 반복 사용할 테스트베드를 구축합니다. 가상 시운전·실기 정합은 그 환경 위에서 확장하고, Physical AI 연구 환경은 정책과 평가 기준이 준비된 팀과 별도 범위로 진행합니다.",
   },
 
   howWeWork: {
@@ -73,7 +73,7 @@ export const home = homeSchema.parse({
   technology: {
     eyebrow: "06 — Engineering Stack",
     title: "Tools With a Job",
-    body: "기술 이름이 아니라, 그 기술이 이 파이프라인에서 맡는 역할로 설명합니다.",
+    body: "현재 납품에 사용하는 실무 스택과, 고객 요건이 있을 때 검토하는 연구 기술을 구분해 설명합니다.",
     cta: { label: "VIEW ENGINEERING STACK", href: "/technology" },
   },
 

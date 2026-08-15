@@ -23,6 +23,13 @@ const projects: Project[] = [
       "시뮬레이터의 모션을 실기의 모션으로 만드는 다섯 층 — 궤적 · 솔버 · 질량비 · 접촉 · 단위",
     stack: ["Isaac Sim", "PhysX", "OpenUSD", "ROS2", "벤더 컨트롤러"],
     isPublished: true,
+    engagement: {
+      decision:
+        "실기와 다른 움직임의 원인이 제어·물리·자산 중 어디에 있는지 분리하고, 모델을 검증 기준으로 사용할 수 있는지 판단",
+      delivered: "물리 기준 설정, 항목별 계측 결과, 수정된 모델과 재현 절차",
+      disclosure:
+        "고객과 장비 식별 정보, 수행 기간과 경제 효과는 공개하지 않은 익명화 기술 기록입니다.",
+    },
     architecture: {
       columns: [
         {
@@ -222,6 +229,13 @@ const projects: Project[] = [
     subtitle: "이동 베이스와 6축 로봇암의 구동부 정합 — 좌표 · 프레임 · 게인 · 기구 상수",
     stack: ["Isaac Sim", "OpenUSD", "ROS2", "TF", "차동 구동", "PhysX"],
     isPublished: true,
+    engagement: {
+      decision:
+        "이동 베이스와 로봇암을 결합한 구성이 제작 전 검증과 이후 실기 정합에 사용할 수 있는지 판단",
+      delivered: "좌표·프레임·구동 기준, 유효 기구 상수 계측, 알려진 한계와 갱신 절차",
+      disclosure:
+        "고객과 장비 식별 정보, 수행 기간과 경제 효과는 공개하지 않은 익명화 기술 기록입니다.",
+    },
     architecture: {
       columns: [
         {
@@ -418,6 +432,13 @@ const projects: Project[] = [
     subtitle: "벤더 컨트롤러 펌웨어를 루프에 넣은 이중 아키텍처와 실기 이관 경로",
     stack: ["ROS2", "Docker", "벤더 컨트롤러 펌웨어", "Isaac Sim", "액션 인터페이스"],
     isPublished: true,
+    engagement: {
+      decision:
+        "설비 완성 전에 실제 컨트롤러의 보간·리미트·에러 조건을 가상 환경에서 검증할 수 있는지 판단",
+      delivered: "이중 실행 아키텍처, 컨트롤러 연동 환경, 안전 기본값과 실기 이관 기준",
+      disclosure:
+        "고객과 장비 식별 정보, 수행 기간과 경제 효과는 공개하지 않은 익명화 기술 기록입니다.",
+    },
     architecture: {
       columns: [
         {

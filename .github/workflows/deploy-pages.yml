@@ -8,7 +8,9 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    # 콘텐츠 사업 전환 브랜치를 현재 프로덕션 소스로 사용한다.
+    # main 으로 되돌릴 때는 이 목록에서 해당 브랜치를 제거한다.
+    branches: [main, codex/content-business-positioning]
   workflow_dispatch:
 
 permissions:

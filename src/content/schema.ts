@@ -206,6 +206,14 @@ export const projectSchema = z.object({
    * 검증되지 않은 실적 주장이 실수로 배포되는 것을 막는 안전장치다.
    */
   isPublished: z.boolean(),
+  /** 구매자가 기술 기록을 실제 발주 맥락으로 읽을 수 있게 하는 공개 가능한 상업 정보. */
+  engagement: z
+    .object({
+      decision: nonEmpty,
+      delivered: nonEmpty,
+      disclosure: nonEmpty,
+    })
+    .optional(),
   /** 케이스 스터디 상단에 놓이는 시뮬레이션 구성도. 사진 대신 이것을 보여준다. */
   architecture: architectureSchema,
   /**
@@ -238,6 +246,8 @@ export const projectSchema = z.object({
 export const technologyGroupSchema = z.object({
   id: slugSchema,
   title: nonEmpty,
+  /** 현재 납품에 쓰는 역량과 고객 요건에 따라 검토하는 연구 확장을 구분한다. */
+  stage: z.enum(["delivery", "research"]),
   /** 그룹을 대표하는 비주얼. 없으면 텍스트만 렌더한다. */
   mediaSlot: nonEmpty.optional(),
   items: z
@@ -327,6 +337,17 @@ export const sectionHeadingSchema = z.object({
   eyebrow: nonEmpty,
   title: nonEmpty,
   body: nonEmpty.optional(),
+});
+
+/** 1인 스튜디오의 수행 경계와 문의 프로토콜. */
+export const engagementSchema = z.object({
+  founderLed: sectionHeadingSchema.extend({ boundaries: z.array(nonEmpty).min(3) }),
+  inquiry: z.object({
+    inputs: z.array(nonEmpty).min(3),
+    response: nonEmpty,
+    confidentiality: nonEmpty,
+    steps: z.array(nonEmpty).min(3),
+  }),
 });
 
 /** 홈의 섹션도 같은 모양이다. 이름만 유지한다. */
@@ -425,6 +446,7 @@ export type WorkGate = z.infer<typeof workGateSchema>;
 export type Home = z.infer<typeof homeSchema>;
 export type HomeSection = z.infer<typeof homeSectionSchema>;
 export type SectionHeadingContent = z.infer<typeof sectionHeadingSchema>;
+export type Engagement = z.infer<typeof engagementSchema>;
 export type WorkflowStep = z.infer<typeof workflowStepSchema>;
 export type CustomerSegment = z.infer<typeof customerSegmentSchema>;
 export type DeliverableBundle = z.infer<typeof deliverableBundleSchema>;
