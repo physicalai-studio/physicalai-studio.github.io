@@ -207,13 +207,16 @@ export const projectSchema = z.object({
    */
   isPublished: z.boolean(),
   /** 구매자가 기술 기록을 실제 발주 맥락으로 읽을 수 있게 하는 공개 가능한 상업 정보. */
-  engagement: z
-    .object({
-      decision: nonEmpty,
-      delivered: nonEmpty,
-      disclosure: nonEmpty,
-    })
-    .optional(),
+  engagement: z.object({
+    customerType: nonEmpty,
+    before: nonEmpty,
+    decision: nonEmpty,
+    duration: nonEmpty,
+    deliverables: z.array(nonEmpty).min(2).max(5),
+    outcome: nonEmpty,
+    impact: nonEmpty,
+    disclosure: nonEmpty,
+  }),
   /** 케이스 스터디 상단에 놓이는 시뮬레이션 구성도. 사진 대신 이것을 보여준다. */
   architecture: architectureSchema,
   /**

@@ -8,7 +8,8 @@ import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
   title: "Projects",
-  description: "문제 · 환경 · 시뮬레이션 · 검증 · 결과로 구성된 케이스 스터디.",
+  description:
+    "고객의 막힌 지점, 필요한 의사결정, 제공물과 활용 결과로 읽는 로봇 시뮬레이션 케이스 스터디.",
   path: "/projects",
 });
 
@@ -24,7 +25,7 @@ export default function ProjectsPage() {
             as="h1"
             eyebrow="Projects"
             title="Case Studies"
-            body="포트폴리오 갤러리가 아닙니다. 무엇을 세워 넘겼고, 그 위에서 무엇이 돌았고, 그때 무엇이 숫자로 확인되었는지의 기록입니다."
+            body="기술 목록보다 먼저 누가 무엇 때문에 막혀 있었고, 이 작업이 어떤 결정을 바꿨는지 보여드립니다. 그다음에 판단을 뒷받침한 구조와 수치를 공개합니다."
           />
         </Section>
 
@@ -44,7 +45,12 @@ export default function ProjectsPage() {
                       <h2 className="text-(length:--text-title) font-semibold tracking-tight uppercase transition-colors group-hover:text-accent">
                         {project.title}
                       </h2>
-                      <p className="mt-3 text-muted">{project.subtitle}</p>
+                      <p className="mt-3 font-mono text-[0.6875rem] tracking-widest text-accent uppercase">
+                        {project.engagement.customerType}
+                      </p>
+                      <p className="mt-5 leading-relaxed text-muted">
+                        {project.engagement.decision}
+                      </p>
                       <p className="mt-6 font-mono text-[0.6875rem] tracking-widest text-faint uppercase">
                         {project.stack.join(" / ")}
                       </p>

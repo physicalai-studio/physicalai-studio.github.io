@@ -212,7 +212,10 @@ function ProjectsSection() {
                 <h3 className="mt-6 text-(length:--text-title) font-semibold tracking-tight uppercase transition-colors group-hover:text-accent">
                   {project.title}
                 </h3>
-                <p className="mt-2 text-muted">{project.subtitle}</p>
+                <p className="mt-2 text-sm text-accent">{project.engagement.customerType}</p>
+                <p className="mt-3 text-sm leading-relaxed text-muted">
+                  {project.engagement.decision}
+                </p>
                 <p className="mt-4 font-mono text-[0.6875rem] tracking-widest text-faint uppercase">
                   {project.stack.join(" / ")}
                 </p>

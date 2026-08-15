@@ -87,6 +87,17 @@ describe("content 무결성", () => {
     expect(new Set(slugs).size).toBe(slugs.length);
   });
 
+  it("모든 케이스가 구매자용 프로젝트 맥락을 제공한다", () => {
+    for (const project of allProjects) {
+      expect(project.engagement.customerType.length).toBeGreaterThan(0);
+      expect(project.engagement.before.length).toBeGreaterThan(0);
+      expect(project.engagement.duration.length).toBeGreaterThan(0);
+      expect(project.engagement.deliverables.length).toBeGreaterThanOrEqual(2);
+      expect(project.engagement.outcome.length).toBeGreaterThan(0);
+      expect(project.engagement.impact.length).toBeGreaterThan(0);
+    }
+  });
+
   it("슬러그로 프로젝트를 찾을 수 있고, 없는 슬러그는 undefined 를 반환한다", () => {
     const first = allProjects[0];
     expect(first).toBeDefined();

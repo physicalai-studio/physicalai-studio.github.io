@@ -68,34 +68,43 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         ) : null}
       </Section>
 
-      {project.engagement ? (
-        <Section bordered wide>
-          <SectionHeading
-            as="h2"
-            eyebrow="Project Context"
-            title="이 작업이 지원한 결정"
-            body={project.engagement.decision}
-          />
-          <dl className="mt-10 grid gap-8 md:grid-cols-2">
-            <div className="border-t border-line pt-5">
+      <Section bordered wide>
+        <SectionHeading
+          as="h2"
+          eyebrow="Project Brief"
+          title="기술보다 먼저, 이 작업이 바꾼 것"
+          body={project.engagement.decision}
+        />
+        <dl className="mt-12 grid gap-px border border-line bg-line md:grid-cols-2 lg:grid-cols-3">
+          {[
+            ["Customer", project.engagement.customerType],
+            ["Before", project.engagement.before],
+            ["Duration", project.engagement.duration],
+            ["Outcome", project.engagement.outcome],
+            ["Business Impact", project.engagement.impact],
+          ].map(([label, value]) => (
+            <div key={label} className="bg-bg p-6">
               <dt className="font-mono text-(length:--text-eyebrow) tracking-[0.2em] text-faint uppercase">
-                Delivered
+                {label}
               </dt>
-              <dd className="mt-3 text-sm leading-relaxed text-muted">
-                {project.engagement.delivered}
-              </dd>
+              <dd className="mt-4 text-sm leading-relaxed text-muted">{value}</dd>
             </div>
-            <div className="border-t border-line pt-5">
-              <dt className="font-mono text-(length:--text-eyebrow) tracking-[0.2em] text-faint uppercase">
-                Disclosure
-              </dt>
-              <dd className="mt-3 text-sm leading-relaxed text-muted">
-                {project.engagement.disclosure}
-              </dd>
-            </div>
-          </dl>
-        </Section>
-      ) : null}
+          ))}
+          <div className="bg-bg p-6">
+            <dt className="font-mono text-(length:--text-eyebrow) tracking-[0.2em] text-faint uppercase">
+              Delivered
+            </dt>
+            <dd className="mt-4">
+              <ul className="space-y-2 text-sm leading-relaxed text-muted">
+                {project.engagement.deliverables.map((deliverable) => (
+                  <li key={deliverable}>— {deliverable}</li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        </dl>
+        <p className="mt-6 text-xs leading-relaxed text-faint">{project.engagement.disclosure}</p>
+      </Section>
 
       {/*
         케이스 스터디 상단은 사진이 아니라 **구성도**다.
