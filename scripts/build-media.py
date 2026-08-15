@@ -54,6 +54,12 @@ JOBS = [
     # 모션이 곧 실기의 모션")과 같은 말이라 자르지 않고 전폭을 쓴다.
     # 왼쪽 흰 벽이 밝아 감마를 크게(2.4) 준다.
     ("real-sim-testbed", "real_sim_testbed.png", None, 1600, 0.84, 2.40),
+    # README에서 옮긴 신규 케이스 캡처. 구도와 정보는 유지하고 원색만 제거해
+    # 프로젝트 페이지의 다른 기술 이미지와 같은 초록 듀오톤으로 맞춘다.
+    # 세 원본 모두 밝은 흰색·청색 영역이 넓어 감마를 높게 잡아 하이라이트 면적을 제한한다.
+    ("case-miniload-r2s", "case-miniload-r2s.png", None, 1600, 0.84, 2.20),
+    ("case-warehouse-commissioning", "case-warehouse-commissioning.png", None, 1600, 0.90, 1.85),
+    ("case-meta-quest-il-alt", "case-meta-quest-il-alt.png", None, 1600, 0.86, 2.15),
     # 실제 설비 내부. **천장 반송 레일 구간만** 쓴다 —
     # 아래쪽 이동 로봇에 기관 표식이 읽히므로 크롭에서 제외한다(익명화).
     # 유리에 비친 안내판 반사도 오른쪽 밖으로 밀어냈다. 실내가 밝아 감마를 크게(2.2) 준다.

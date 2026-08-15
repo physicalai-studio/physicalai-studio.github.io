@@ -217,19 +217,19 @@ export const mediaManifest = mediaManifestSchema.parse({
   },
   "project-miniload-r2s": {
     kind: "image",
-    src: "/media/case-miniload-r2s.png",
+    src: "/media/case-miniload-r2s.webp",
     alt: "컨베이어와 다층 랙 사이를 이동하는 미니로더 디지털 트윈 전경",
     clearance: "self-produced",
   },
   "project-warehouse-commissioning": {
     kind: "image",
-    src: "/media/case-warehouse-commissioning.png",
+    src: "/media/case-warehouse-commissioning.webp",
     alt: "미니로더 포크의 적재물 이송을 서로 다른 시점과 시점에서 비교한 시뮬레이션 화면",
     clearance: "self-produced",
   },
   "project-meta-quest-il": {
     kind: "image",
-    src: "/media/case-meta-quest-il-alt.png",
+    src: "/media/case-meta-quest-il-alt.webp",
     alt: "휴머노이드 양팔 조작 시연을 아홉 프레임으로 나열한 모방학습 데이터 예시",
     clearance: "self-produced",
   },
