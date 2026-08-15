@@ -1356,6 +1356,254 @@ const projects: Project[] = [
     ],
     mediaSlot: "project-navigation",
   },
+  {
+    slug: "miniload-real-to-sim-control",
+    title: "MINILOAD REAL-TO-SIM CONTROL",
+    subtitle: "실제 S-curve 제어를 물리 엔진에 옮긴 미니로더 제어 정합",
+    stack: ["Isaac Sim", "PhysX", "OpenUSD", "S-curve", "Python"],
+    isPublished: true,
+    engagement: {
+      customerType: "자동창고 미니로더·물류 제어 개발팀",
+      before:
+        "기본 PD 제어의 초기 충격으로 적재물이 이탈했고 실제 설비의 가감속 거동과 달랐습니다.",
+      decision:
+        "기본 드라이브를 유지할지, 실제 제어 프로파일을 에뮬레이션하는 계층을 둘지 판단했습니다.",
+      duration: "2023.03–2024.06 통합 프로젝트 내 수행",
+      deliverables: [
+        "미니로더 물리 모델",
+        "S-curve 제어 계층",
+        "입출고 기준 시나리오",
+        "사이클 타임 계측",
+      ],
+      outcome: "입고 사이클 평균 34.6초의 기준선을 만들고 거리별 31–36초 범위를 확인했습니다.",
+      impact: "적재물이 뒤집히는 가속 경계를 실물 시운전 전에 반복 재현할 수 있게 했습니다.",
+      disclosure:
+        "고객·현장 식별 정보는 제거했으며, 공개된 자체 제작 시뮬레이션 자산을 사용합니다.",
+    },
+    architecture: {
+      columns: [
+        { label: "01 · Order", nodes: [{ label: "WMS 랙 주소" }, { label: "입출고 작업" }] },
+        { label: "02 · Mapping", nodes: [{ label: "주소 ↔ 로컬 좌표" }, { label: "이동 거리" }] },
+        {
+          label: "03 · Control",
+          isFocus: true,
+          nodes: [{ label: "S-curve 목표" }, { label: "게인 스케줄링" }, { label: "힘 제한" }],
+        },
+        {
+          label: "04 · Physics",
+          nodes: [{ label: "173 kg 등가 질량" }, { label: "포크 · 박스 접촉" }],
+        },
+        { label: "05 · Measure", nodes: [{ label: "속도 · 시간" }, { label: "전복 경계" }] },
+      ],
+      feedback: "사이클 타임과 적재물 충격을 제어 프로파일·힘 제한·마찰 파라미터로 되돌린다.",
+      caption: "주문 주소에서 물리 계측까지 이어지는 미니로더 제어 정합 경로",
+    },
+    diagrams: [],
+    metrics: [
+      { value: "34.6초", label: "입고 사이클 평균", note: "거리별 실행 기록의 평균" },
+      { value: "31–36초", label: "근거리–최대거리 범위", note: "같은 입고 시나리오" },
+      { value: "173 kg", label: "포크 계통 등가 질량", note: "포크 134 kg + plate 39 kg" },
+      { value: "2.5 m/s", label: "검증한 최고 속도", note: "적재물 전복 경계를 함께 확인" },
+    ],
+    problem: [
+      "기본 PD 드라이브는 초기 위치 오차가 가장 큰 순간에 강한 제어력을 냈고, **박스가 이탈하거나 뒤집히는 관성 충격**을 만들었습니다.",
+      "실제 설비는 S-curve로 가속과 감속을 제한하므로 게인 하나를 낮추는 것만으로는 같은 거동을 만들 수 없었습니다.",
+    ],
+    environment: [
+      "포크·승강·슬라이드 축을 가진 미니로더, 다층 랙, 컨베이어와 적재 박스를 하나의 PhysX 장면으로 구성했습니다.",
+      "WMS 주소와 설비 좌표는 매퍼 메타데이터로 분리해 레이아웃이 바뀌어도 제어 코드를 다시 쓰지 않게 했습니다.",
+    ],
+    simulation: [
+      "목표 위치를 ease-in/ease-out으로 이동시키고 stiffness와 damping을 거리와 시간에 따라 스케줄링했습니다.",
+      "MaxForce, 목표 궤적과 게인 변화를 서로 다른 계층으로 두어 **한 번에 한 변수만 바꾸고 결과를 비교**했습니다.",
+    ],
+    verification: [
+      "조인트 위치·속도를 로깅해 이론 프로파일과 비교하고, 근거리와 최대거리 입고 사이클을 영상과 로그로 측정했습니다.",
+      "과도한 가속에서 박스가 뒤집힌 실행도 지우지 않고 운용 경계를 정하는 실패 시나리오로 남겼습니다.",
+    ],
+    result: [
+      "입고 사이클 평균 34.6초와 거리별 31–36초 범위를 확보했습니다.",
+      "가장 빠른 프로파일이 아니라 **적재 안정성을 지키는 가속 경계**를 선택할 수 있는 테스트베드를 인계했습니다.",
+    ],
+    lessons: [
+      {
+        title: "힘 제한은 속도 프로파일이 아니다",
+        body: "MaxForce만 낮추면 전 구간의 힘이 부족해집니다. **목표 궤적과 힘 제한은 다른 계층**으로 다뤄야 합니다.",
+      },
+      {
+        title: "실패 영상도 검증 자산이다",
+        body: "박스 전복은 삭제할 결과가 아니라 **운용 가능한 가속도의 경계**를 보여주는 인수 시나리오입니다.",
+      },
+    ],
+    mediaSlot: "project-miniload-r2s",
+  },
+  {
+    slug: "warehouse-end-to-end-commissioning",
+    title: "WAREHOUSE END-TO-END COMMISSIONING",
+    subtitle: "로봇암·컨베이어·미니로더·AMR를 잇는 물류 가상 시운전",
+    stack: ["Isaac Sim", "PhysX", "WCS", "PLC Emulator", "ROS2", "MQTT"],
+    isPublished: true,
+    engagement: {
+      customerType: "물류 자동화 시스템 통합·운영 개발팀",
+      before:
+        "개별 설비는 동작했지만 전체 입출고 흐름의 충돌·큐·인터록 문제는 실물 통합 뒤에야 드러났습니다.",
+      decision:
+        "설비 제작과 통합 전에 주문 한 건이 끝까지 처리되는지를 검증할 수 있는지 판단했습니다.",
+      duration: "2023.03–2024.06",
+      deliverables: [
+        "통합 디지털 테스트베드",
+        "가상 PLC I/O",
+        "WCS/WMS 인터페이스",
+        "1,000개 이상 자동 시나리오",
+      ],
+      outcome:
+        "입고·저장·출고를 하나의 상태 흐름으로 실행하고 충돌·낙하·과적재 조건을 사전에 분리했습니다.",
+      impact:
+        "현장 연결 전에 물리·제어·통신·운영 시퀀스 중 문제의 소유 계층을 찾을 수 있게 했습니다.",
+      disclosure: "고객사명과 현장 식별 정보는 제거한 익명화 기술 기록입니다.",
+    },
+    architecture: {
+      columns: [
+        { label: "01 · WMS", nodes: [{ label: "주문 · 재고" }, { label: "랙 주소" }] },
+        { label: "02 · WCS", nodes: [{ label: "작업 할당" }, { label: "큐 · 인터록" }] },
+        {
+          label: "03 · PLC",
+          isFocus: true,
+          nodes: [{ label: "가상 I/O" }, { label: "상태 전이" }],
+        },
+        {
+          label: "04 · Equipment",
+          nodes: [{ label: "로봇암 · 컨베이어" }, { label: "미니로더 · AMR" }],
+        },
+        { label: "05 · Evidence", nodes: [{ label: "충돌 · 낙하" }, { label: "처리 완료" }] },
+      ],
+      feedback: "실패 시나리오를 WCS 시퀀스, PLC I/O, 설비 파라미터와 레이아웃으로 되돌린다.",
+      caption: "주문에서 실제 설비 상태까지 같은 계약으로 연결한 가상 시운전 구조",
+    },
+    diagrams: [],
+    metrics: [
+      { value: "4종", label: "통합 설비 계층", note: "로봇암 · 컨베이어 · 미니로더 · AMR" },
+      { value: "1,000+", label: "자동 물리 시나리오", note: "정상 흐름과 edge case" },
+      { value: "2방향", label: "검증한 물류 흐름", note: "입고와 출고" },
+      { value: "1환경", label: "운영·제어·물리 통합", note: "WMS에서 PhysX까지" },
+    ],
+    problem: [
+      "설비 네 대가 각각 움직이는 것과 주문 한 건이 끝까지 처리되는 것은 다른 문제였습니다.",
+      "컨베이어 축적, 로봇 pick 타이밍, 랙 주소와 AMR 도착 시점이 만나는 **계층 사이에서 교착과 충돌**이 생겼습니다.",
+    ],
+    environment: [
+      "입고는 컨베이어→로봇암→미니로더, 출고는 미니로더→로봇암→컨베이어→AMR로 구성했습니다.",
+      "WMS 주소, WCS 작업, 가상 PLC I/O와 PhysX 설비 모델을 같은 환경에 연결했습니다.",
+    ],
+    simulation: [
+      "가상 PLC가 실제와 같은 상태 계약을 제공하고 WCS는 그 상태를 보고 다음 작업을 결정합니다.",
+      "물리 장면에서는 마찰·관성·접촉을, 운영 계층에서는 버퍼·큐·타임아웃·인터록을 함께 실행했습니다.",
+    ],
+    verification: [
+      "정상 입출고와 함께 충돌, 낙하, 과적재, 설비 지연과 상태 불일치를 자동 시나리오로 반복했습니다.",
+      "영상 종료가 아니라 각 단계의 상태 계약과 물리 인수 조건을 모두 통과해야 성공으로 판정했습니다.",
+    ],
+    result: [
+      "개별 설비 데모를 **주문 단위의 운영 검증 환경**으로 바꿨습니다.",
+      "문제가 발생하면 물리·제어·통신·운영 시퀀스 중 어느 계층의 결함인지 분리할 수 있게 됐습니다.",
+    ],
+    lessons: [
+      {
+        title: "개별 동작은 운영 검증이 아니다",
+        body: "설비가 각각 움직여도 주문은 끝나지 않을 수 있습니다. **상태 전이와 인수 조건**이 함께 검증되어야 합니다.",
+      },
+      {
+        title: "가상 PLC도 계약의 대역이다",
+        body: "애니메이션용 신호가 아니라 상위 시스템이 실제와 같은 방식으로 거절·대기·완료를 만나는 **인터페이스 계약**이어야 합니다.",
+      },
+    ],
+    mediaSlot: "project-warehouse-commissioning",
+  },
+  {
+    slug: "meta-quest-imitation-data-pipeline",
+    title: "META QUEST IMITATION DATA PIPELINE",
+    subtitle: "VR 인간 시연을 로봇 학습 데이터로 바꾸는 폐루프 파이프라인",
+    stack: ["Meta Quest", "OpenXR", "Unity", "ROS2", "Isaac Sim", "Imitation Learning"],
+    isPublished: true,
+    engagement: {
+      customerType: "휴머노이드·로봇 조작 정책 연구팀",
+      before: "전용 장비와 수작업 전처리 때문에 인간 시연 데이터를 반복 생성하기 어려웠습니다.",
+      decision:
+        "저가형 VR 장비로 수집부터 리타게팅·증강까지 한 명이 반복할 수 있는지 판단했습니다.",
+      duration: "2023.09–2024.03",
+      deliverables: [
+        "Meta Quest 수집기",
+        "30 Hz 궤적 데이터",
+        "전처리·리타게팅 파이프라인",
+        "Isaac Sim 증강 환경",
+      ],
+      outcome:
+        "인간 시연 50개를 로봇 궤적으로 변환하고 시뮬레이션에서 10배 증강하는 경로를 만들었습니다.",
+      impact:
+        "실패 데이터를 다시 수집해 다음 학습으로 되돌릴 수 있는 1인 데이터 생성 루프를 확보했습니다.",
+      disclosure: "개인 식별 영상과 고객 고유 데이터는 포함하지 않은 시뮬레이션 캡처만 사용합니다.",
+    },
+    architecture: {
+      columns: [
+        {
+          label: "01 · Capture",
+          nodes: [{ label: "Meta Quest 시연" }, { label: "30 Hz · 6-DOF" }],
+        },
+        {
+          label: "02 · Normalize",
+          nodes: [{ label: "좌표 · 시간 정합" }, { label: "노이즈 제거" }],
+        },
+        {
+          label: "03 · Retarget",
+          isFocus: true,
+          nodes: [{ label: "인간 → 로봇" }, { label: "관절 한계 · 충돌" }],
+        },
+        { label: "04 · Augment", nodes: [{ label: "Isaac Sim" }, { label: "Randomization" }] },
+        { label: "05 · Evaluate", nodes: [{ label: "정책 실행" }, { label: "실패 조건" }] },
+      ],
+      feedback:
+        "정책 실패 조건을 시연 범위, 필터, 리타게팅 제약과 randomization 설정으로 되돌린다.",
+      caption: "인간 시연에서 정책 실패 조건까지 닫히는 모방학습 데이터 파이프라인",
+    },
+    diagrams: [],
+    metrics: [
+      { value: "50개", label: "수집한 인간 시연", note: "동일 파이프라인 입력" },
+      { value: "30 Hz", label: "모션 데이터 주기", note: "비전·관절 시간 정합" },
+      { value: "6-DOF", label: "수집 표현", note: "로봇 관절 구조로 리타게팅" },
+      { value: "10배", label: "시뮬레이션 증강", note: "50개에서 500개 조건 생성" },
+    ],
+    problem: [
+      "모방학습의 병목은 학습 코드보다 **인간 시연을 반복 가능한 데이터로 만드는 과정**이었습니다.",
+      "좌표계·자유도·관절 한계·시간 동기화가 연속해서 바뀌기 때문에 수작업 변환은 데이터가 늘수록 같은 오류를 반복했습니다.",
+    ],
+    environment: [
+      "Meta Quest 3와 OpenXR로 몸·손 데이터를 받고 Unity에서 스켈레톤을 구성했습니다.",
+      "관절 데이터와 시뮬레이션 프레임을 ROS2로 동기화해 휴머노이드 조작 환경에 연결했습니다.",
+    ],
+    simulation: [
+      "노이즈 제거와 timestamp 정합 뒤 인간 표현을 로봇 관절 구조로 리타게팅했습니다.",
+      "관절 한계와 충돌을 통과한 궤적만 데이터셋으로 넘기고 Isaac Sim에서 조건을 증강했습니다.",
+    ],
+    verification: [
+      "원본 시연, 정제 데이터, 리타게팅 관절각과 시뮬레이터 포즈를 단계별로 대조했습니다.",
+      "정책 실패는 시연 범위와 제약 조건으로 되돌려 다음 수집에서 같은 사각지대를 줄였습니다.",
+    ],
+    result: [
+      "50개 시연을 자동 정제·리타게팅하고 10배 조건으로 확장하는 경로를 만들었습니다.",
+      "특정 정책의 최고 점수보다 **한 명이 실패 데이터를 다음 학습으로 되돌릴 수 있는 폐루프**를 산출물로 남겼습니다.",
+    ],
+    lessons: [
+      {
+        title: "영상과 관절은 같은 시간축이어야 한다",
+        body: "두 데이터가 따로 맞아 보여도 timestamp가 다르면 시연이 아닙니다. **시간 계약이 데이터 품질의 첫 번째 층**입니다.",
+      },
+      {
+        title: "리타게팅은 스케일링이 아니다",
+        body: "인간과 로봇의 자유도 차이는 비율로 옮길 수 없습니다. **관절 한계와 충돌을 포함한 제약 문제**로 풀어야 합니다.",
+      },
+    ],
+    mediaSlot: "project-meta-quest-il",
+  },
 ].map((project) => projectSchema.parse(project));
 
 export const allProjects = projects;
