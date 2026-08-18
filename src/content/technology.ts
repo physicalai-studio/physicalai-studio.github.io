@@ -41,7 +41,6 @@ export const technologyGroups = [
     id: "robotics",
     title: "ROBOTICS",
     stage: "delivery",
-    mediaSlot: "technology-actuator",
     items: [
       { name: "6축 산업용 로봇암", role: "정밀 자세 유지와 직선 이송 작업의 도달성 검증" },
       { name: "7-DOF 양팔 매니퓰레이터", role: "토크 제어 기반 양팔 협조 동작과 텔레오퍼레이션" },
