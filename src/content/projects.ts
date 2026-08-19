@@ -18,7 +18,7 @@ import { projectSchema, type Project } from "./schema";
 const projects: Project[] = [
   {
     slug: "physics-engine-evaluation",
-    title: "PHYSICS ENGINE EVALUATION",
+    title: "NEWTON PHYSICS ENGINE EVALUATION",
     subtitle: "차세대 물리 엔진을 프로덕션에 넣어도 되는가 — 같은 씬을 두 엔진으로 돌려 얻은 판정",
     stack: ["Isaac Sim", "PhysX", "Newton", "OpenUSD", "ROS2", "RTX LiDAR"],
     isPublished: true,
@@ -219,7 +219,7 @@ const projects: Project[] = [
         body: "접촉·파지의 물리 우위는 대규모 반복 비교 없이는 말할 수 없습니다. **근거가 생기기 전까지 '더 낫다'를 쓰지 않는 것**이 이 비교표의 신뢰도입니다.",
       },
     ],
-    mediaSlot: "project-engine-divergence",
+    mediaSlot: "project-newton-engine",
   },
   {
     slug: "five-layer-physics-tuning",

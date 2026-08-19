@@ -202,6 +202,12 @@ export const mediaManifest = mediaManifestSchema.parse({
     alt: "중심에서는 겹치고 바깥으로 갈수록 어긋나는 초록빛 맥놀이 파면",
     clearance: "self-produced",
   },
+  "project-newton-engine": {
+    kind: "image",
+    src: "/media/newton-engine.webp",
+    alt: "뉴턴 진자와 구체 열, 금속 조형이 놓인 실험대를 초록 듀오톤으로 옮긴 장면",
+    clearance: "self-produced",
+  },
   "project-physics-tuning": {
     kind: "image",
     src: "/media/real-sim-testbed.webp",

@@ -60,6 +60,11 @@ JOBS = [
     ("case-miniload-r2s", "case-miniload-r2s.png", None, 1600, 0.84, 2.20),
     ("case-warehouse-commissioning", "case-warehouse-commissioning.png", None, 1600, 0.90, 1.85),
     ("case-meta-quest-il-alt", "case-meta-quest-il-alt.png", None, 1600, 0.86, 2.15),
+    # Newton 물리 엔진 케이스 대표 이미지. 원본이 4:3 이라 목록 카드 비율(16:9)로 위아래를 잘라
+    # 진자와 구체 열, 그리고 "N" 조형이 한 화면에 오게 했다.
+    # 실험실 배경이 밝지만 피사체가 크롬·유리라 감마를 과하게 주면 형상이 통째로 죽는다 —
+    # 1.45 가 배경 글자는 읽히지 않으면서 피사체는 살아 있는 지점이다.
+    ("newton-engine", "newton_3d.png", (0, 180, 1448, 994), 1448, 1.00, 1.45),
     # 실제 설비 내부. **천장 반송 레일 구간만** 쓴다 —
     # 아래쪽 이동 로봇에 기관 표식이 읽히므로 크롭에서 제외한다(익명화).
     # 유리에 비친 안내판 반사도 오른쪽 밖으로 밀어냈다. 실내가 밝아 감마를 크게(2.2) 준다.
