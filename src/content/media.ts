@@ -191,6 +191,17 @@ export const mediaManifest = mediaManifestSchema.parse({
     alt: "천장 반송 레일과 조명이 격자를 이루는 자동화 설비 내부",
     clearance: "anonymized",
   },
+  /**
+   * 같은 세계를 두 엔진이 계산할 때 생기는 갈라짐을 형태로 옮긴 장.
+   * 파수가 미세하게 다른 두 파의 맥놀이 — 가까이서는 겹치고 멀어질수록 어긋난다.
+   * 생성: `scripts/gen-fields.py build_engine_divergence_field()` (비주얼 컨셉 §4 `DIVERGENCE`)
+   */
+  "project-engine-divergence": {
+    kind: "image",
+    src: "/media/engine-divergence-field.webp",
+    alt: "중심에서는 겹치고 바깥으로 갈수록 어긋나는 초록빛 맥놀이 파면",
+    clearance: "self-produced",
+  },
   "project-physics-tuning": {
     kind: "image",
     src: "/media/real-sim-testbed.webp",

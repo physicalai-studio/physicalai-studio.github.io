@@ -422,6 +422,39 @@ def build_navigation_field() -> np.ndarray:
     return np.clip(np.clip(field, 0.0, 1.0) ** 1.15 * 0.84, 0.0, 1.0)
 
 
+def build_engine_divergence_field() -> np.ndarray:
+    """`DIVERGENCE` — 같은 파원, 다른 계산. 가까이서는 겹치고 멀리서는 갈라진다.
+
+    **형이상학적 분석** — 두 물리 엔진은 같은 세계를 계산한다. 자산도 같고 명령도 같다.
+    다른 것은 **그 세계를 어떻게 셈하는가**뿐이다. 그래서 이미 검증된 가까운 영역에서는
+    두 결과가 겹치고, 아무도 재 본 적 없는 먼 영역으로 갈수록 어긋난다.
+    **어긋나는 폭 자체가 우리가 아직 모르는 양이다.**
+
+    | 요소                   | 뜻                                                  |
+    | ---------------------- | --------------------------------------------------- |
+    | 하나의 파원            | 같은 자산 · 같은 명령 · 같은 계약                   |
+    | 아주 조금 다른 파수    | 계산 방식의 차이 — 물리가 아니라 셈법이 다르다      |
+    | 중심 근처의 일치       | 이미 계측으로 확인된 영역                           |
+    | 멀어질수록 벌어지는 맥놀이 | 검증되지 않은 영역. 간격이 곧 불확실성의 크기     |
+
+    구현은 맥놀이(beat)다 — 파수가 미세하게 다른 두 파를 더하면 위상차가 거리에 비례해
+    쌓이고, 마디가 바깥으로 갈수록 넓어진다. 두 엔진 비교의 구조와 정확히 같은 형태다.
+    """
+    x, y = grid(0.5, 0.46, squash=1.0)
+    radius = np.sqrt(x**2 + y**2) + 1e-3
+
+    # 같은 파원에서 나온 두 계산. 파수 차이가 작을수록 갈라지는 지점이 멀어진다.
+    first, second = 24.0, 27.4
+    amplitude = np.cos(radius * first) + np.cos(radius * second)
+    field = (amplitude * 0.5) ** 2
+
+    # 중심은 비운다 — 파원 자체가 주제가 아니라 두 계산의 차이가 주제다.
+    field *= 1.0 - np.exp(-((radius / 0.13) ** 2))
+
+    field *= np.exp(-((radius / 1.45) ** 1.8))
+    return np.clip(np.clip(field, 0.0, 1.0) ** 0.92 * 0.94, 0.0, 1.0)
+
+
 def apply_ramp(field: np.ndarray) -> np.ndarray:
     """스칼라 밝기장을 초록 램프 색으로 매핑한다."""
     positions = np.array([stop for stop, _ in RAMP], dtype=np.float32)
@@ -462,6 +495,7 @@ def main() -> None:
     render("projects-field", build_projects_field())
     render("technology-field", build_technology_field())
     render("sim-machine-field", build_sim_machine_field())
+    render("engine-divergence-field", build_engine_divergence_field())
     render("orientation-field", build_orientation_field())
     render("navigation-field", build_navigation_field())
 
